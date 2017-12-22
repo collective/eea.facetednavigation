@@ -21,6 +21,27 @@ Changelog
 * Upgrade step: Within "Plone > Site setup > Add-ons" click on
   upgrade button available for eea.facetednavigation.
 
+* Change: Replace eeacms/zptlint with eeacms/plone-test:4 zptlint
+  [avoinea refs #90415]
+* Bug fix: Fix JS Error for Text Widget with default value
+  [avoinea refs #89955]
+* Bug fix: Fix ICriteria upgrade boolean schema (count, reverse, etc.)
+  [avoinea refs #89955]
+* Bug fix: Fix ICriteria upgrade empty default to [u'']
+  [avoinea refs #89955]
+* Change: remove unused css
+  [petchesi-iulian refs #88382]
+* Bug fix: FieldIndex: decode utf-8. 
+  Faceted navigation failed with no results if option with umlauts is selected.
+  [ksuess]
+
+10.6 - (2017-11-15)
+-------------------
+* Change: Update jstree to work with eea.jquery 10.3+
+  [avoinea refs eea.jquery#7]
+* Upgrade step: Within "Plone > Site setup > Add-ons" click on
+  upgrade button available for eea.facetednavigation.
+
 10.5 - (2017-11-14)
 -------------------
 * Change: Remove Sphinx generated documentation

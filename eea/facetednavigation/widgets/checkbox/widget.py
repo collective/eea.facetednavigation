@@ -100,6 +100,12 @@ class Widget(CountableWidget):
         if not value:
             return query
 
+        if isinstance(value, list):
+            if isinstance(value[0], str):
+                value = [el.decode('utf-8') for el in value]
+        elif isinstance(value, str):
+            value = value.decode('utf-8')
+        
         catalog = getToolByName(self.context, 'portal_catalog')
         if index in catalog.Indexes:
             if catalog.Indexes[index].meta_type == 'BooleanIndex':
