@@ -32,6 +32,9 @@ class FacetedCatalog(object):
         if not apply_index:
             return IIBucket(), (index_id,)
 
+        if type(value) == unicode:
+            value = value.encode('utf-8')
+
         rset = apply_index({index_id: value})
 
         if not rset:
