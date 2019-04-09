@@ -455,6 +455,8 @@ class CountableWidget(Widget):
                 res[value] = len(brains)
                 continue
             normalized_value = atdx_normalize(value)
+            if type(normalized_value) is unicode:
+                normalized_value = normalized_value.encode('utf-8')
             if index.meta_type == 'BooleanIndex':
                 if normalized_value == 'False':
                     normalized_value = False
