@@ -258,16 +258,22 @@ class Widget(GroupForm, Form):
             # get values from SOLR if collective.solr is present
             searchutility = queryUtility(ISolrSearch)
             if searchutility is not None:
-                index = self.data.get('index', None)
-                kw = {'facet': 'on',
-                  'facet.field': index,    # facet on index
-                  'facet.limit': -1,       # show unlimited results
-                  'rows': 0}                # no results needed
-                result = searchutility.search('*:*', **kw)
-                try:
-                    values = list(result.facet_counts['facet_fields'][index].keys())
-                except (AttributeError, KeyError):
-                    pass
+                from collective.solr.interfaces import ISolrConnectionConfig
+                config = queryUtility(ISolrConnectionConfig)
+                if config and config.active:
+                    index = self.data.get('index', None)
+                    kw = {
+                        'facet': 'on',
+                        'facet.field': index,   # facet on index
+                        'facet.limit': -1,      # show unlimited results
+                        'rows': 0,              # no results needed
+                    }
+                    result = searchutility.search('*:*', **kw)
+                    try:
+                        values = list(
+                            result.facet_counts['facet_fields'][index].keys())
+                    except (AttributeError, KeyError):
+                        pass
 
             if not values:
                 values = self.catalog_vocabulary()
