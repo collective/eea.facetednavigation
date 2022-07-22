@@ -50,4 +50,14 @@
   <javascript id="++resource++eea.facetednavigation.widgets.tal.edit.js" remove="True" />
   <javascript id="++resource++eea.facetednavigation.widgets.text.edit.js" remove="True" />
 
+  <!-- Faceted JS static resources -->
+  <javascript
+    id="++resource++facetednavigation/faceted-view.min.js"
+    bundle="faceted-view" />
+
+  <javascript
+    id="++resource++facetednavigation/faceted-edit.min.js"
+    expression="python:'configure_faceted.html' in request.URL0"
+    bundle="faceted-edit" />
+
 </object>
