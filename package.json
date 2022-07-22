@@ -39,10 +39,11 @@
     "scripts": {
         "build": "npm-run-all build:webpack build:css",
         "build:webpack": "NODE_ENV=production webpack --config webpack.config.js",
-        "build:css": "npm-run-all css-minify",
+        "build:css": "npm-run-all css-minify-view css-minify-edit",
         "watch:webpack": "NODE_ENV=development webpack --config webpack.config.js --watch",
         "start": "NODE_ENV=development webpack serve --config webpack.config.js",
-        "css-minify": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output eea/facetednavigation/static/facetednavigation.min.css eea/facetednavigation/static/facetednavigation.css"
+        "css-minify-view": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output eea/facetednavigation/browser/static/faceted-view.min.css ./resources/view.css",
+        "css-minify-edit": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output eea/facetednavigation/browser/static/faceted-edit.min.css ./resources/edit.css"
     },
     "browserslist": {
         "production": [

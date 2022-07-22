@@ -1,4 +1,4 @@
-var Faceted = {version: '2.0'};
+var Faceted = window.Faceted = {version: '15.0'};
 /* Events
 */
 Faceted.Events = {};
@@ -523,3 +523,5 @@ Faceted.Cleanup = function(){
   // Reset URL hash
   Faceted.URLHandler.set();
 };
+
+window.Faceted = Faceted;
