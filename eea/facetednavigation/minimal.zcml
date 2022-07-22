@@ -13,7 +13,6 @@
 
   <!-- Dependencies -->
   <include package="collective.js.jqueryui" />
-  <include package="eea.jquery" />
 
   <include file="profiles.zcml" />
   <include file="permissions.zcml" />

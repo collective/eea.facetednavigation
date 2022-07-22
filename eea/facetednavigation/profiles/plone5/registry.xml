@@ -96,22 +96,17 @@
            interface='Products.CMFPlone.interfaces.IBundleRegistry' remove="True" />
   <records prefix="plone.bundles/faceted-edit"
            interface='Products.CMFPlone.interfaces.IBundleRegistry' remove="True" />
-
   <records prefix="plone.bundles/faceted-jquery"
-           interface='Products.CMFPlone.interfaces.IBundleRegistry'>
-    <value key="resources">
-      <element>ajaxfileupload</element>
-      <element>bbq</element>
-      <element>jstree</element>
-      <element>select2uislider</element>
-      <element>tagcloud</element>
-      <element>select2</element>
-    </value>
-    <value key="depends">jqueryui</value>
-    <value key="csscompilation">++plone++static/faceted-navigation-jquery.min.css</value>
-    <value key="jscompilation">++plone++static/faceted-navigation-jquery.min.js</value>
-    <value key="compile">False</value>
+           interface='Products.CMFPlone.interfaces.IBundleRegistry' remove="True" />
+
+  <records prefix="plone.bundles/faceted.jquery" interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="enabled">True</value>
+    <value key="jscompilation">++resource++facetednavigation/faceted-jquery.min.js</value>
+    <value key="csscompilation">++resource++facetednavigation/faceted-jquery.min.css</value>
+    <value key="expression"></value>
+    <value key="depends">jqueryui</value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
   </records>
 
   <records prefix="plone.bundles/faceted.view" interface='Products.CMFPlone.interfaces.IBundleRegistry'>
@@ -119,7 +114,7 @@
     <value key="jscompilation">++resource++facetednavigation/faceted-view.min.js</value>
     <value key="csscompilation">++resource++facetednavigation/faceted-view.min.css</value>
     <value key="expression"></value>
-    <value key="depends">faceted-jquery</value>
+    <value key="depends">faceted.jquery</value>
     <value key="load_async">False</value>
     <value key="load_defer">False</value>
   </records>
@@ -129,7 +124,7 @@
     <value key="jscompilation">++resource++facetednavigation/faceted-edit.min.js</value>
     <value key="csscompilation">++resource++facetednavigation/faceted-edit.min.css</value>
     <value key="expression">python:'configure_faceted.html' in request.URL0</value>
-    <value key="depends">faceted-jquery</value>
+    <value key="depends">faceted.jquery</value>
     <value key="load_async">False</value>
     <value key="load_defer">False</value>
   </records>

@@ -49,6 +49,10 @@
 
  <!-- Faceted CSS static resources -->
  <stylesheet
+    id="++resource++facetednavigation/faceted-jquery.min.css"
+    bundle="faceted-view" />
+
+ <stylesheet
     id="++resource++facetednavigation/faceted-view.min.css"
     bundle="faceted-view" />
 

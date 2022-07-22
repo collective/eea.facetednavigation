@@ -11,6 +11,8 @@ Changelog
 * Cleanup: Bundle JS/CSS resource with webpack and remove individual
   resource registrations
   [avoinea refs #231]
+* Cleanup: Drop eea.jquery dependency
+  [avoinea refs #231]
 * Cleanup: Drop eea.faceted.vocabularies dependency
   [avoinea refs #231]
 
