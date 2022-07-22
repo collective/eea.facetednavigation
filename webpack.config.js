@@ -5,9 +5,9 @@ const path = require("path");
 module.exports = [
     {
         entry: './resources/plugins.js',
-        optimization: {
-            minimize: false
-        },
+        // optimization: {
+        //     minimize: false
+        // },
         output: {
             path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
             filename: 'faceted-jquery.min.js',
@@ -15,9 +15,9 @@ module.exports = [
     },
     {
         entry: './resources/view.js',
-        optimization: {
-            minimize: false
-        },
+        // optimization: {
+        //     minimize: false
+        // },
         output: {
             path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
             filename: 'faceted-view.min.js',
@@ -25,9 +25,9 @@ module.exports = [
     },
     {
         entry: './resources/edit.js',
-        optimization: {
-            minimize: false
-        },
+        // optimization: {
+        //     minimize: false
+        // },
         output: {
             path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
             filename: 'faceted-edit.min.js',
