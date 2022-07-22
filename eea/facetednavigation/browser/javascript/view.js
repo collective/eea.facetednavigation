@@ -523,5 +523,3 @@ Faceted.Cleanup = function(){
   // Reset URL hash
   Faceted.URLHandler.set();
 };
-
-window.Faceted = Faceted;

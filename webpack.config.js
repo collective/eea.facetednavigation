@@ -12,6 +12,9 @@ module.exports = [
     },
     {
         entry: './resources/view.js',
+        optimization: {
+            minimize: false
+        },
         output: {
             path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
             filename: 'faceted-view.min.js',
@@ -19,6 +22,9 @@ module.exports = [
     },
     {
         entry: './resources/edit.js',
+        optimization: {
+            minimize: false
+        },
         output: {
             path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
             filename: 'faceted-edit.min.js',
