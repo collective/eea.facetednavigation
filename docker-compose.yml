@@ -12,9 +12,6 @@ services:
       SITE: "Plone"
       ADDONS: "eea.facetednavigation"
       DEVELOP: "/plone/instance/src/eea.facetednavigation"
-    tty: true
-    stdin_open: true
-    command: cat
 
   plone5:
     image: plone/plone-backend:5
