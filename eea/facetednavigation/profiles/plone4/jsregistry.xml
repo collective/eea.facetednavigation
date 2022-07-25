@@ -52,6 +52,10 @@
 
   <!-- Faceted JS static resources -->
   <javascript
+    id="++resource++facetednavigation/faceted-jquery.min.js"
+    bundle="faceted-view" />
+
+  <javascript
     id="++resource++facetednavigation/faceted-view.min.js"
     bundle="faceted-view" />
 

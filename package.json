@@ -39,9 +39,10 @@
     "scripts": {
         "build": "npm-run-all build:webpack build:css",
         "build:webpack": "NODE_ENV=production webpack --config webpack.config.js",
-        "build:css": "npm-run-all css-minify-view css-minify-edit",
+        "build:css": "npm-run-all css-minify-plugins css-minify-view css-minify-edit",
         "watch:webpack": "NODE_ENV=development webpack --config webpack.config.js --watch",
         "start": "NODE_ENV=development webpack serve --config webpack.config.js",
+        "css-minify-plugins": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output eea/facetednavigation/browser/static/faceted-jquery.min.css ./resources/plugins.css",
         "css-minify-view": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output eea/facetednavigation/browser/static/faceted-view.min.css ./resources/view.css",
         "css-minify-edit": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output eea/facetednavigation/browser/static/faceted-edit.min.css ./resources/edit.css"
     },
