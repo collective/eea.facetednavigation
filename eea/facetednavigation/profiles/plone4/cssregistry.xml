@@ -47,6 +47,10 @@
  <stylesheet id="++resource++eea.facetednavigation.widgets.tal.edit.css" remove="True" />
  <stylesheet id="++resource++eea.facetednavigation.widgets.text.edit.css" remove="True" />
 
+ <!-- Cleanup eea.jquery dependencies -->
+ <stylesheet id="++resource++select2/select2.css" remove="True" />
+ <stylesheet id="++resource++jquery.select2uislider.css" remove="True" />
+
  <!-- Faceted CSS static resources -->
  <stylesheet
     id="++resource++facetednavigation/faceted-jquery.min.css"

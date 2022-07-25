@@ -50,6 +50,15 @@
   <javascript id="++resource++eea.facetednavigation.widgets.tal.edit.js" remove="True" />
   <javascript id="++resource++eea.facetednavigation.widgets.text.edit.js" remove="True" />
 
+  <!-- Cleanup eea.jquery dependencies -->
+  <javascript id="++resource++jquery.cookie.js" remove="True" />
+  <javascript id="++resource++jquery.ajaxfileupload.js" remove="True" />
+  <javascript id="++resource++jquery.bbq.js" remove="True" />
+  <javascript id="++resource++jquery.jstree.js" remove="True" />
+  <javascript id="++resource++jquery.select2uislider.js" remove="True" />
+  <javascript id="++resource++jquery.tagcloud.js" remove="True" />
+  <javascript id="++resource++select2/select2.min.js" remove="True" />
+
   <!-- Faceted JS static resources -->
   <javascript
     id="++resource++facetednavigation/faceted-jquery.min.js"
