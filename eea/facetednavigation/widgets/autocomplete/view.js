@@ -94,9 +94,15 @@ Faceted.AutocompleteWidget.prototype = {
   },
 
   do_query: function(element){
-    var value = this.select.select2('val');
-    if (value && !Array.isArray(value)) {
+    var raw_value = this.select.select2('data');
+    var value = null;
+    if (raw_value && !Array.isArray(raw_value)) {
       value = [value];
+    } else if (raw_value && Array.isArray(raw_value)) {
+      value = [];
+      jQuery.each(raw_value, function(idx, val){
+        value.push(JSON.stringify(val))
+      });
     }
 
     if(!element){
@@ -138,8 +144,13 @@ Faceted.AutocompleteWidget.prototype = {
     }
 
     var data = [];
-    jQuery.each(value, function(idx, val){
-      var item = {id: val, text: val};
+    jQuery.each(value, function(idx, raw_val){
+      try {
+        var val = JSON.parse(raw_val);
+      } catch {
+        val = {"id": raw_val, "text": raw_val}
+      }
+      var item = {id: val.id, text: val.text};
       if(self.multiple) {
         data.push(item);
       } else {
