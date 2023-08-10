@@ -3,9 +3,8 @@ Changelog
 
 14.9 (unreleased)
 -----------------
-
-- Nothing changed yet.
-
+* Fix displayed value for autocomplete widget
+  [mpeeters]
 
 14.8 - (2022-09-15)
 ---------------------------
