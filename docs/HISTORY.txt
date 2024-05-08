@@ -1,6 +1,11 @@
 Changelog
 =========
 
+16.4 - (2024-05-08)
+---------------------------
+* Bug fix: Fix uncheck inputs
+  [@Gomez - refs #254]
+
 16.3 - (2024-05-08)
 ---------------------------
 * Bug fix: Fix criteria count & pin lint versions
