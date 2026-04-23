@@ -8,7 +8,7 @@ Trainings on how to create your own website using Plone 6 is available as part o
 
 * Python **3.7, 3.8, 3.9**
 * Python **python-venv** and **python-dev**
-* Yarn
+* Node 16 / Yarn (See https://6.dev-docs.plone.org/volto/getting-started)
 * Libraries
   - **libz**
   - **libjpeg**
@@ -45,12 +45,12 @@ In order to develop Plone 6 backend add-on run:
 
 To use other **Python** version run make with `-e` parameter:
 
-    make -e PYTHON=python3.9
+    make -e PYTHON=python3.8
     make start
 
 To use other **Plone** version run make with `-e` parameter:
 
-    make -e PLONE_VERSION=6.0.0a6
+    make -e PLONE_VERSION=5.2.9
     make start
 
 ## CSS / JS Resources
@@ -83,6 +83,25 @@ We recommend using [Visual Studio Code](https://code.visualstudio.com/) Editor
 **Note** `Hot reload` is not available for Plone backend development, thus you'll have to **restart** Plone after you edit Python code. Still, there are options to reload your changes without restarting Plone, by using `plone.reload` and `dm.plonepatches.reload`. Go to http://localhost:8080/@@reload `admin:admin`
 
 See also: [Debugging Plone in Visual Studio Code](https://community.plone.org/t/our-pip-based-development-workflow-for-plone/14562#debugging-plone-in-visual-studio-code-11)
+
+## Note on Faceted Navigation Javascript events
+
+If you depend on events from Faceted Navigation within your code, make sure you use the correct "depends":
+
+    <records interface="Products.CMFPlone.interfaces.IBundleRegistry"
+             prefix="plone.bundles/your-pkg">
+        <value key="enabled">True</value>
+        <value key="jscompilation">++plone++your-pkg/build/your-pkg-remote.min.js</value>
+        <value key="load_defer">False</value>
+        <value key="load_async">False</value>
+        <value key="depends">faceted.jquery</value>
+    </records>
+
+Now you should be able to execute your code, for example, after the Faceted Navigation (with results - AJAX_QUERY_SUCCESS) has loaded.
+
+      $(window.Faceted.Events).bind(window.Faceted.Events.AJAX_QUERY_SUCCESS, function () {
+        // Your code
+      });
 
 ### Useful Visual Studio Code shortcuts
 
