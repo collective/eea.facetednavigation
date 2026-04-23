@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="eea"
     >
 
@@ -15,7 +16,25 @@
       title="EEA Faceted Navigation"
       description="Extension profile for EEA Faceted Navigation."
       provides="Products.GenericSetup.interfaces.EXTENSION"
-      directory="profiles/default"
+      directory="profiles/plone5"
+      zcml:condition="have plone-5"
+      />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="EEA Faceted Navigation"
+      description="Extension profile for EEA Faceted Navigation."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/plone4"
+      zcml:condition="not-have plone-5"
+      />
+
+  <genericsetup:registerProfile
+      name="universal"
+      title="EEA Faceted Navigation Common Configuration"
+      description="Extension profile for EEA Faceted Navigation settings that aren't version dependent."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/common"
       />
 
   <genericsetup:registerProfile
@@ -35,7 +54,7 @@
       />
 
   <utility
-      factory=".setuphandlers.HiddenProfiles"
+      factory=".HiddenProfiles"
       name="eea.facetednavigation"
       />
 

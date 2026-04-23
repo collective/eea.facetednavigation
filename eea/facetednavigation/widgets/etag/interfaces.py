@@ -1,47 +1,49 @@
 """ Widget interfaces and schema
 """
-from eea.facetednavigation import _
-from eea.facetednavigation.widgets.interfaces import DefaultSchemata as DS
-from eea.facetednavigation.widgets.interfaces import ISchema
-from eea.facetednavigation.widgets.interfaces import LayoutSchemata as LS
-from z3c.form import field
 from zope import schema
+from z3c.form import field
+from eea.facetednavigation.widgets.interfaces import ISchema
+from eea.facetednavigation.widgets.interfaces import DefaultSchemata as DS
+from eea.facetednavigation.widgets.interfaces import LayoutSchemata as LS
+from eea.facetednavigation import EEAMessageFactory as _
+import six
 
 
 class IETagSchema(ISchema):
-    """Schema"""
-
+    """ Schema
+    """
     hidden = schema.Bool(
-        title=_("Enabled (hidden)"),
-        description=_("Hide this widget in order for e-tag to be used"),
+        title=_(u'Enabled (hidden)'),
+        description=_(u"Hide this widget in order for e-tag to be used"),
         required=False,
-        default=True,
+        default=True
     )
 
     default = schema.TextLine(
-        title=_("Default value"),
-        description=_("Default e-tag"),
+        title=_(u"Default value"),
+        description=_(u"Default e-tag"),
         required=False,
-        default="1.0",
+        default=u"1.0"
     )
+    default._type = (six.text_type, str)
 
 
 class DefaultSchemata(DS):
-    """Schemata default"""
-
+    """ Schemata default
+    """
     fields = field.Fields(IETagSchema).select(
-        "title",
-        "default",
-        "hidden",
+        u'title',
+        u'default',
+        u'hidden',
     )
 
 
 class LayoutSchemata(LS):
-    """Schemata default"""
-
+    """ Schemata default
+    """
     fields = field.Fields(IETagSchema).select(
-        "position",
-        "section",
+        u'position',
+        u'section',
     )
 
 

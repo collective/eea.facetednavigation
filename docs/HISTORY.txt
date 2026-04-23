@@ -1,35 +1,6 @@
 Changelog
 =========
 
-16.4 - (2024-05-08)
----------------------------
-* Bug fix: Fix uncheck inputs
-  [@Gomez - refs #254]
-
-16.3 - (2024-05-08)
----------------------------
-* Bug fix: Fix criteria count & pin lint versions
-  [@Gomez - refs #253]
-
-16.2 - (2023-10-17)
----------------------------
-* Re-release broken 16.1 version
-  [avoinea]
-
-16.1 - (2023-10-16)
----------------------------
-* Bug fix: Fix Select2 dependency
-  [@Gomez - refs #249]
-* Bug fix: Fix criteria_remove on checkbox view
-  [@Nimo-19 - refs #248]
-
-16.0 - (2023-10-05)
----------------------------
-* Feature: Plone 6 compatibility
-  [avoinea refs #231]
-* Breaking: Drop Plone4 / Python2 support
-  [avoinea refs #231]
-
 15.1 - (2022-09-12)
 ---------------------------
 * Fix: Fix TypeError: Cannot read properties of undefined (reading 'msie')

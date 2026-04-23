@@ -2,6 +2,3 @@ dist/
 docs/
 node_modules/
 stats.json
-*.min.js
-*.min.css
-

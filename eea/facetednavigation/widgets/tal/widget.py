@@ -1,24 +1,30 @@
 """ TAL widget
 """
 # Python
-from eea.facetednavigation import _
+import logging
+from zope.interface import Interface
+from eea.facetednavigation.widgets import ViewPageTemplateFile
 from eea.facetednavigation.widgets import TrustedEngine
 from eea.facetednavigation.widgets import TrustedZopeContext
-from eea.facetednavigation.widgets import ViewPageTemplateFile
 from eea.facetednavigation.widgets.tal.interfaces import DefaultSchemata
 from eea.facetednavigation.widgets.tal.interfaces import LayoutSchemata
 from eea.facetednavigation.widgets.widget import Widget as AbstractWidget
-from plone.dexterity.interfaces import IDexterityContent
+from eea.facetednavigation import EEAMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 
-import logging
+import six
 
+try:
+    from Products.Archetypes.interfaces import IBaseObject
+except ImportError:
+    class IBaseObject(Interface):
+        """ Fallback IBaseObject """
 
-logger = logging.getLogger("eea.facetednavigation")
+logger = logging.getLogger('eea.facetednavigation')
 
 
 class Widget(AbstractWidget):
-    """TAL Expression widget
+    """ TAL Expression widget
 
     The following contexts can be used within tal expressions:
 
@@ -30,24 +36,24 @@ class Widget(AbstractWidget):
     criterion -- Tal Expression Criterion instance
 
     """
+    widget_type = 'tal'
+    widget_label = _('TAL Expression')
 
-    widget_type = "tal"
-    widget_label = _("TAL Expression")
-
-    index = ViewPageTemplateFile("widget.pt")
+    index = ViewPageTemplateFile('widget.pt')
     groups = (DefaultSchemata, LayoutSchemata)
 
     def referer(self, path=None):
-        """Extract referer from request or return self.context"""
+        """ Extract referer from request or return self.context
+        """
         default = self.context.aq_inner
         if path is None:
-            path = getattr(self.request, "HTTP_REFERER", None)
+            path = getattr(self.request, 'HTTP_REFERER', None)
 
         if not path:
             return default
 
-        portal_url = getToolByName(self.context, "portal_url")
-        path = path.replace(portal_url(), "", 1)
+        portal_url = getToolByName(self.context, 'portal_url')
+        path = path.replace(portal_url(), '', 1)
         site = portal_url.getPortalObject().absolute_url(1)
         if site and (not path.startswith(site)):
             path = site + path
@@ -60,33 +66,31 @@ class Widget(AbstractWidget):
         if path == self.context.absolute_url(1):
             return default
 
-        if IDexterityContent.providedBy(referer):
+        if IBaseObject.providedBy(referer):
             return referer
 
-        path = "/".join(path.split("/")[:-1])
+        path = '/'.join(path.split('/')[:-1])
         return self.referer(path)
 
     def talexpr(self, form=None):
-        """Compile tal expression"""
+        """ Compile tal expression
+        """
         if form is None:
             form = {}
 
         talexpr = self.default
         if talexpr is None:
-            return ""
+            return ''
 
         engine = TrustedEngine
-        context = TrustedZopeContext(
-            engine,
-            dict(
-                context=self.context.aq_inner,
-                referer=self.referer(),
-                request=self.request,
-                criterion=self.data,
-                widget=self,
-                form=form,
-            ),
-        )
+        context = TrustedZopeContext(engine, dict(
+            context=self.context.aq_inner,
+            referer=self.referer(),
+            request=self.request,
+            criterion=self.data,
+            widget=self,
+            form=form
+        ))
         expression = engine.compile(talexpr)
         result = context.evaluate(expression)
         if callable(result):
@@ -94,12 +98,14 @@ class Widget(AbstractWidget):
         return result
 
     def query(self, form):
-        """Update query.
+        """ Update query.
 
         Use 'FACET-EMPTY' string to send no query to catalog
         """
         query = {}
-        index = self.data.get("index", "")
+        index = self.data.get('index', '')
+        if six.PY2:
+            index = index.encode('utf-8', 'replace')
         if not index:
             return query
 

@@ -1,31 +1,32 @@
 """ Widget interfaces and schema
 """
-from eea.facetednavigation import _
-from eea.facetednavigation.widgets.interfaces import DefaultSchemata as DS
-from eea.facetednavigation.widgets.interfaces import ISchema
-from eea.facetednavigation.widgets.interfaces import LayoutSchemata
-from z3c.form import field
 from zope import schema
+from z3c.form import field
+from eea.facetednavigation.widgets.interfaces import ISchema
+from eea.facetednavigation.widgets.interfaces import DefaultSchemata as DS
+from eea.facetednavigation.widgets.interfaces import LayoutSchemata
+from eea.facetednavigation import EEAMessageFactory as _
+import six
 
 
 class IPortletSchema(ISchema):
-    """Schema"""
-
+    """ Schema
+    """
     macro = schema.TextLine(
-        title=_("Portlet macro"),
-        description=_("Path to portlet macro"),
+        title=_(u'Portlet macro'),
+        description=_(u'Path to portlet macro'),
     )
+    macro._type = (six.text_type, str)
 
 
 class DefaultSchemata(DS):
-    """Schemata default"""
-
+    """ Schemata default
+    """
     fields = field.Fields(IPortletSchema).select(
-        "title",
-        "default",
-        "macro",
+        u'title',
+        u'default',
+        u'macro',
     )
-
 
 __all__ = [
     IPortletSchema.__name__,

@@ -1,4 +1,5 @@
 process.traceDeprecation = true;
+const package_json = require("./package.json");
 const path = require("path");
 
 module.exports = [
@@ -10,9 +11,6 @@ module.exports = [
         output: {
             path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
             filename: 'faceted-jquery.min.js',
-        },
-        externals: {
-            jquery: 'jQuery',
         },
     },
     {

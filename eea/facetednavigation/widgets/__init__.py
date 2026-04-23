@@ -1,9 +1,8 @@
 """ Faceted widgets
 """
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from zope.pagetemplate.engine import TrustedEngine
-from zope.pagetemplate.engine import TrustedZopeContext
-
+from eea.facetednavigation.plonex import ViewPageTemplateFile
+from eea.facetednavigation.plonex import TrustedEngine
+from eea.facetednavigation.plonex import TrustedZopeContext
 
 __names__ = [
     ViewPageTemplateFile.__name__,

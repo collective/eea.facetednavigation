@@ -1,26 +1,31 @@
 """ Results Filter widget
 """
-from eea.facetednavigation import _
+import logging
+from zope.interface import implementer
+from zope.interface import Interface
 from eea.facetednavigation.widgets import TrustedEngine
 from eea.facetednavigation.widgets import TrustedZopeContext
 from eea.facetednavigation.widgets import ViewPageTemplateFile
-from eea.facetednavigation.widgets.resultsfilter.interfaces import DefaultSchemata
-from eea.facetednavigation.widgets.resultsfilter.interfaces import IResultsFilterWidget
-from eea.facetednavigation.widgets.resultsfilter.interfaces import LayoutSchemata
 from eea.facetednavigation.widgets.widget import Widget as AbstractWidget
-from plone.dexterity.interfaces import IDexterityContent
+from eea.facetednavigation import EEAMessageFactory as _
+from eea.facetednavigation.widgets.resultsfilter.interfaces import (
+    IResultsFilterWidget,
+    DefaultSchemata,
+    LayoutSchemata,
+)
 from Products.CMFCore.utils import getToolByName
-from zope.interface import implementer
+try:
+    from Products.Archetypes.interfaces import IBaseObject
+except ImportError:
+    class IBaseObject(Interface):
+        """ Fallback IBaseObject """
 
-import logging
-
-
-logger = logging.getLogger("eea.facetednavigation")
+logger = logging.getLogger('eea.facetednavigation')
 
 
 @implementer(IResultsFilterWidget)
 class Widget(AbstractWidget):
-    """Results Filter widget
+    """ Results Filter widget
 
     The following contexts can be used within tal expressions:
 
@@ -33,24 +38,24 @@ class Widget(AbstractWidget):
     brain     -- Catalog brain
 
     """
-
-    widget_type = "resultsfilter"
-    widget_label = _("Results Filter")
+    widget_type = 'resultsfilter'
+    widget_label = _('Results Filter')
 
     groups = (DefaultSchemata, LayoutSchemata)
-    index = ViewPageTemplateFile("widget.pt")
+    index = ViewPageTemplateFile('widget.pt')
 
     def referer(self, path=None):
-        """Extract referer from request or return self.context"""
+        """ Extract referer from request or return self.context
+        """
         default = self.context.aq_inner
         if path is None:
-            path = getattr(self.request, "HTTP_REFERER", None)
+            path = getattr(self.request, 'HTTP_REFERER', None)
 
         if not path:
             return default
 
-        portal_url = getToolByName(self.context, "portal_url")
-        path = path.replace(portal_url(), "", 1)
+        portal_url = getToolByName(self.context, 'portal_url')
+        path = path.replace(portal_url(), '', 1)
         site = portal_url.getPortalObject().absolute_url(1)
         if site and (not path.startswith(site)):
             path = site + path
@@ -63,30 +68,28 @@ class Widget(AbstractWidget):
         if path == self.context.absolute_url(1):
             return default
 
-        if IDexterityContent.providedBy(referer):
+        if IBaseObject.providedBy(referer):
             return referer
 
-        path = "/".join(path.split("/")[:-1])
+        path = '/'.join(path.split('/')[:-1])
         return self.referer(path)
 
     def talexpr(self, brain=None):
-        """Compile tal expression"""
+        """ Compile tal expression
+        """
         talexpr = self.default
         if talexpr is None:
-            return ""
+            return ''
 
         engine = TrustedEngine
-        context = TrustedZopeContext(
-            engine,
-            dict(
-                context=self.context.aq_inner,
-                referer=self.referer(),
-                request=self.request,
-                criterion=self.data,
-                brain=brain,
-                widget=self,
-            ),
-        )
+        context = TrustedZopeContext(engine, dict(
+            context=self.context.aq_inner,
+            referer=self.referer(),
+            request=self.request,
+            criterion=self.data,
+            brain=brain,
+            widget=self
+        ))
         expression = engine.compile(talexpr)
         result = context.evaluate(expression)
         if callable(result):

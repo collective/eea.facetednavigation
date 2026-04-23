@@ -7,21 +7,8 @@ module.exports = {
         node: true,
         jest: true,
     },
-    globals: {
-        "jQuery": true,
-        "Faceted": true,
-        "FacetedEdit": true,
-        "FacetedTree": true
-    },
     parser: "@babel/eslint-parser",
-    ignorePatterns: [
-        "cache/",
-        "coverage/",
-        "dist/",
-        "node_modules/",
-        "stats.json",
-        "style/",
-    ],
+    ignorePatterns: ["dist/", "docs/", "node_modules/"],
     rules: {
         "no-debugger": 1,
         "no-duplicate-imports": 1,
@@ -31,4 +18,5 @@ module.exports = {
         "no-self-assign": 0,
         "no-useless-escape": 0,
     },
+    globals: {},
 };

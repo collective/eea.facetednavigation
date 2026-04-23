@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="eea"
     >
 
@@ -8,6 +9,16 @@
       factory=".feed.FacetedFeed"
       provides="Products.CMFPlone.interfaces.syndication.IFeed"
       for="eea.facetednavigation.interfaces.IFacetedNavigable"
+      zcml:condition="have plone-43"
+      />
+
+  <!-- skos syndication -->
+  <browser:page
+      name="skos_syndication"
+      for="eea.facetednavigation.interfaces.IFacetedNavigable"
+      class=".skos.SKOS"
+      allowed_attributes="concepts"
+      permission="zope.Public"
       />
 
 </configure>

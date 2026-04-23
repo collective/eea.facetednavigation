@@ -14,8 +14,6 @@
 .installed.cfg
 .mr.developer.cfg
 .Python
-.yarn
-.pyenv
 inituser
 bin/
 buildout-cache/
