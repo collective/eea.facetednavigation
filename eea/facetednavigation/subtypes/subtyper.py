@@ -19,11 +19,6 @@ from zope.interface import implementer
 from zope.interface import noLongerProvides
 from zope.publisher.interfaces import NotFound
 
-import pkg_resources
-
-
-plone_version = pkg_resources.get_distribution("Products.CMFPlone").version
-
 
 @implementer(IFacetedSubtyper)
 class FacetedPublicSubtyper(BrowserView):
