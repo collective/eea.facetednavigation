@@ -1,12 +1,12 @@
 ======================
 EEA Faceted Navigation
 ======================
-.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=eea/eea.facetednavigation/develop
-  :target: https://ci.eionet.europa.eu/job/eea/job/eea.facetednavigation/job/develop/display/redirect
-  :alt: Develop
-.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=eea/eea.facetednavigation/master
-  :target: https://ci.eionet.europa.eu/job/eea/job/eea.facetednavigation/job/master/display/redirect
-  :alt: Master
+
+::
+
+   This repo was archived
+
+See `collective/eea.facetednavigation <https://github.com/collective/eea.facetednavigation>`_ for new releases
 
 The EEA Faceted Navigation **(FacetedNav)** gives you a
 **very powerful interface to improve search within large collections of items.**
@@ -330,4 +330,4 @@ Funding
 EEA_ - European Environment Agency (EU)
 
 .. _EEA: https://www.eea.europa.eu/
-.. _`collective.solr`:  https://github.com/collective/collective.solr
+.. _`collective.solr`: https://github.com/collective/collective.solr
