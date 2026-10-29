@@ -19,7 +19,7 @@
     <value key="csscompilation">++plone++facetednavigation/faceted-jquery.min.css</value>
     <value key="expression"></value>
     <value key="depends">plone</value>
-    <value key="load_async">True</value>
+    <value key="load_async">False</value>
     <value key="load_defer">True</value>
   </records>
 
@@ -30,7 +30,7 @@
     <value key="csscompilation">++plone++facetednavigation/faceted-view.min.css</value>
     <value key="expression"></value>
     <value key="depends">faceted.jquery</value>
-    <value key="load_async">True</value>
+    <value key="load_async">False</value>
     <value key="load_defer">True</value>
   </records>
 
@@ -41,7 +41,7 @@
     <value key="csscompilation">++plone++facetednavigation/faceted-edit.min.css</value>
     <value key="expression"></value>
     <value key="depends">faceted.view</value>
-    <value key="load_async">True</value>
+    <value key="load_async">False</value>
     <value key="load_defer">True</value>
   </records>
 

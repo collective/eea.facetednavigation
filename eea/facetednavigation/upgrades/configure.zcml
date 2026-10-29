@@ -17,4 +17,12 @@
 
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeStep
+      title="Load the faceted bundles in order (defer, not async)"
+      profile="eea.facetednavigation:default"
+      source="16.0"
+      destination="16.5"
+      handler=".evolve165.disable_async_bundles"
+      />
+
 </configure>

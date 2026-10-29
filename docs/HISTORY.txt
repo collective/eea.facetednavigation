@@ -1,6 +1,13 @@
 Changelog
 =========
 
+16.5 - (unreleased)
+---------------------------
+* Bug fix: Load the faceted bundles with defer instead of async, so
+  faceted-view.min.js no longer runs before jQuery.bbq is defined and
+  faceted results load on Plone 6
+  [@chris-adam]
+
 16.4 - (2024-05-08)
 ---------------------------
 * Bug fix: Fix uncheck inputs
