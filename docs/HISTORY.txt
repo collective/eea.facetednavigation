@@ -3,6 +3,12 @@ Changelog
 
 16.5 - (unreleased)
 ---------------------------
+
+* Remove call to pkg_resources to retrieve the current Plone version.
+  That prevented startup with setuptools > 82 and was actually not anymore used
+  at all.
+  [@thet]
+
 * Bug fix: Load the faceted bundles with defer instead of async, so
   faceted-view.min.js no longer runs before jQuery.bbq is defined and
   faceted results load on Plone 6
