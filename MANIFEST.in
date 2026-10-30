@@ -5,3 +5,16 @@ global-exclude *pyc
 global-exclude *~
 global-exclude *.un~
 global-include *.mo
+exclude .eslintignore
+exclude .eslintrc.js
+exclude .prettierignore
+exclude .prettierrc.json
+exclude babel.config.js
+exclude docker-compose.yml
+exclude Makefile
+exclude package.json
+exclude webpack.config.js
+exclude yarn.lock
+exclude zope.conf
+prune .vscode
+prune resources
