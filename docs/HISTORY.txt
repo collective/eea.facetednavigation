@@ -1,8 +1,8 @@
 Changelog
 =========
 
-16.5 - (unreleased)
----------------------------
+16.5+slc.0 (2026-10-30)
+-----------------------
 
 * Remove call to pkg_resources to retrieve the current Plone version.
   That prevented startup with setuptools > 82 and was actually not anymore used
