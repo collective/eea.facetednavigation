@@ -1,0 +1,69 @@
+<div class="faceted-widget faceted-resultsperpage-widget"
+     style="display: none"
+     tal:define="
+       error_view nocall:context/@@faceted.widget.error;
+       wid python:view.data.getId();
+       hidden python:view.hidden;
+       default_value python:view.default or 0;
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+       vocabulary python:view.vocabulary();
+     "
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset">
+    <legend tal:define="
+              title python:view.data.get('title', '');
+            "
+            tal:content="
+  python:view.translate(title)"
+            i18n:translate=""
+    >HTML Widget</legend>
+
+    <tal:facet on-error="structure python:error_view(error=error, cid=wid)">
+
+      <div class="faceted-widget-error"
+           tal:condition="not:vocabulary"
+      >
+        <div i18n:translate="">Invalid or empty range provided for this widget. This widget will be ignored in view mode.</div>
+      </div>
+
+      <form action="."
+            method="get"
+      >
+
+        <tal:select condition="vocabulary">
+          <select class="form-select"
+                  tal:attributes="
+                    name wid;
+                    id wid;
+                  "
+          >
+            <tal:option repeat="term vocabulary">
+              <option tal:define="
+                        term_id python:term[0];
+                        term_label python:term[1];
+                        chbox_id string:${wid}_${term_id};
+                        chbox_id python:view.cleanup(chbox_id);
+                      "
+                      tal:content="term_label"
+                      tal:attributes="
+                        selected python:term_id == default_value;
+                        value term_id;
+                        title term_label;
+                      "
+              ></option>
+            </tal:option>
+          </select>
+        </tal:select>
+
+      </form>
+
+    </tal:facet>
+  </fieldset>
+</div>

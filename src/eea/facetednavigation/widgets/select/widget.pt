@@ -1,0 +1,92 @@
+<div class="faceted-widget faceted-select-widget"
+     style="display: none"
+     tal:define="
+       error_view nocall:context/@@faceted.widget.error;
+       wid python:view.data.getId();
+       hidden python:view.hidden;
+       hidezerocount python:view.hidezerocount;
+       sortcountable python:view.sortcountable;
+       hidealloption view/data/hidealloption|nothing;
+       default_value python:view.default or '';
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+       css python:view.countable and css + ' faceted-count' or css;
+       css python:sortcountable and css + ' faceted-sortcountable' or css;
+       css python:hidezerocount and css + ' faceted-zero-count-hidden' or css;
+       css python:hidealloption and css + ' hide-all-option' or css;
+       vocabulary python:view.vocabulary();
+       mode view/mode|string:display;
+       visible python:mode == 'input' or vocabulary;
+     "
+     tal:condition="visible"
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset"
+            tal:define="
+              title python:view.data.get('title', '');
+            "
+  >
+    <legend tal:content="python:view.translate(title)"
+            i18n:translate=""
+    >Current Search</legend>
+
+    <tal:facet on-error="structure python:error_view(error=error, cid=wid)">
+
+      <div class="faceted-widget-error"
+           tal:condition="not:vocabulary"
+      >
+        <div i18n:translate="">Invalid or empty vocabulary provided for this widget. This widget will be ignored in view mode.</div>
+      </div>
+
+      <form action="."
+            method="get"
+      >
+        <label class="select-field form-check-label"
+               tal:content="python:view.translate(title)"
+               tal:attributes="
+                 for wid;
+               "
+        ></label>
+        <select class="form-select"
+                tal:attributes="
+                  name wid;
+                  id wid;
+                "
+        >
+          <option title="All"
+                  value=""
+                  tal:condition="not:view/data/hidealloption|nothing"
+                  tal:attributes="
+                    selected python: not default_value;
+                  "
+                  i18n:attributes="title"
+                  i18n:translate=""
+          >All</option>
+          <tal:option repeat="term vocabulary">
+            <option tal:define="
+                      term_id python:term[0];
+                      term_label python:term[1];
+                      term_label python:view.translate(term_label);
+                      chbox_id string:${wid}_${term_id};
+                      chbox_id python:view.cleanup(chbox_id);
+                    "
+                    tal:content="term_label"
+                    tal:attributes="
+                      selected python:term_id == default_value;
+                      value term_id;
+                      title term_label;
+                    "
+            ></option>
+          </tal:option>
+        </select>
+
+      </form>
+
+    </tal:facet>
+  </fieldset>
+</div>

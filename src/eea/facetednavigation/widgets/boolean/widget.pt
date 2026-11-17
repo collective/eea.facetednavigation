@@ -1,0 +1,67 @@
+<div class="faceted-widget faceted-checkboxes-widget faceted-boolean-widget"
+     style="display: none"
+     tal:define="
+       error_view nocall:context/@@faceted.widget.error;
+       wid python:view.data.getId();
+       hidden python:view.hidden;
+       hidezerocount python:view.hidezerocount;
+       sortcountable python:view.sortcountable;
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+       css python:view.countable and css + ' faceted-count' or css;
+       title python:view.translate(view.data.get('title', ''));
+     "
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset">
+    <legend tal:content="title"
+            i18n:translate=""
+    >HTML Widget</legend>
+    <tal:facet on-error="structure python:error_view(error=error, cid=wid)">
+
+      <form action="."
+            method="get"
+      >
+
+        <ul>
+          <li tal:define="
+                term_id view/index_id;
+                chbox_id string:${wid}_${term_id};
+                chbox_id python:view.cleanup(chbox_id);
+                option_id string:${wid}_option_${chbox_id};
+              "
+              tal:attributes="
+                id option_id;
+              "
+          >
+            <input class="form-check-input"
+                   type="checkbox"
+                   tal:attributes="
+                     checked python:view.selected();
+                     name string:${wid};
+                     id chbox_id;
+                     title title;
+                     value string:selected;
+                   "
+            />
+            <label class="form-check-label"
+                   tal:content="title"
+                   tal:attributes="
+                     for chbox_id;
+                     title title;
+                   "
+            >term label</label>
+          </li>
+        </ul>
+
+      </form>
+
+    </tal:facet>
+
+  </fieldset>
+</div>

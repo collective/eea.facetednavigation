@@ -1,2 +1,0 @@
-""" Custom behaviour for indexes
-"""

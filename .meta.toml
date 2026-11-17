@@ -1,0 +1,42 @@
+# Generated from:
+# https://github.com/plone/meta/tree/2.x/src/plone/meta/default
+# See the inline comments on how to expand/tweak this configuration file
+[meta]
+template = "default"
+commit-id = "2.12.0"
+
+[gitignore]
+extra_lines = """
+.venv
+htmlcov/
+.mxdev_cache/
+requirements.txt
+.yarn
+"""
+
+[pyproject]
+# Generated bundles, lock file and translations (msgids keep their typos)
+codespell_skip = "*.min.js,*.min.css,*.map,yarn.lock,*.po,*.pot"
+# JS and template identifiers, and the "filters bellow" msgid
+codespell_ignores = "colapse,colapsed,alph,oll,aline,bellow"
+# plone.classicui: classic distribution for the dev instance (scripts/create_site.py)
+# collective.solr, eea.cache: optional, imported in a try/except ImportError
+dependencies_ignores = "['plone.classicui', 'collective.solr', 'eea.cache']"
+check_manifest_ignores = """
+    ".eslintignore",
+    ".eslintrc.js",
+    ".prettierignore",
+    ".prettierrc.json",
+    "Makefile",
+    "babel.config.js",
+    "instance.yaml",
+    "package.json",
+    "resources/*",
+    "scripts/*",
+    "webpack.config.js",
+    "yarn.lock",
+"""
+
+[tox]
+test_matrix = {"6.2" = ["3.13", "3.12", "3.11", "3.10"], "6.1" = ["3.13", "3.12", "3.11", "3.10"]}
+constraints_files = {"6.2" = "https://dist.plone.org/release/6.2.3/constraints.txt", "6.1" = "https://dist.plone.org/release/6.1-latest/constraints.txt"}

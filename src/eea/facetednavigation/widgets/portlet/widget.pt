@@ -1,0 +1,34 @@
+<div class="faceted-widget faceted-portlet-widget"
+     style="display: none"
+     tal:define="
+       error_view nocall:context/@@faceted.widget.error;
+       template nocall:view;
+       wid python:template.data.getId();
+       hidden python:template.hidden;
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+     "
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset">
+    <legend tal:define="
+              title python:template.data.get('title', '');
+            "
+            tal:content="
+    python:template.translate(title)"
+            i18n:translate=""
+    >Portlet Widget</legend>
+    <tal:widget tal:on-error="structure python:error_view(error=error, cid=wid)">
+      <tal:portlet define="
+                     macro python:template.macro;
+                   ">
+        <metal:portlet use-macro="python:macro" />
+      </tal:portlet>
+    </tal:widget>
+  </fieldset>
+</div>

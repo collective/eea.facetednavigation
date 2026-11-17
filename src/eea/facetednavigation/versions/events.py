@@ -1,0 +1,17 @@
+"""Version related events"""
+
+from zope.component import queryMultiAdapter
+
+import logging
+
+logger = logging.getLogger("eea.faceted.versions")
+
+
+def updateFacetedVersion(obj, event):
+    """Generate new version for faceted configuration."""
+    request = getattr(obj, "request", getattr(obj, "REQUEST", None))
+    version = queryMultiAdapter((obj, request), name="faceted_version")
+    if not version:
+        logger.exception("Could not update faceted version for %s", obj)
+        return
+    version.key = "Generate another key"

@@ -1,0 +1,124 @@
+<div class="faceted-widget faceted-multiselect-widget"
+     style="display: none"
+     tal:define="
+       error_view nocall:context/@@faceted.widget.error;
+       wid python:view.data.getId();
+       hidden python:view.hidden;
+       multiple python:'multiple' if view.data.get('multiple', False) else None;
+       hidezerocount python:view.hidezerocount;
+       sortcountable python:view.sortcountable;
+       default_value python:view.data.get('default', u'');
+       placeholder python:view.data.get('placeholder', 'Select a value');
+       closeOnSelect python:view.data.get('closeonselect', False);
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+       css python:view.countable and css + ' faceted-count' or css;
+       css python:hidezerocount and css + ' faceted-zero-count-hidden' or css;
+       css python:sortcountable and css + ' faceted-sortcountable' or css;
+       operator python:view.operator;
+       operator_visible python:view.operator_visible;
+       operator_lable python: 'any' if operator == 'or' else 'all';
+       vocabulary view/vocabulary;
+       mode view/mode|string:display;
+       visible python:mode == 'input' or vocabulary;
+       ajax python:view.data.get('ajax', u'');
+     "
+     tal:condition="visible"
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+       data-placeholder python:view.translate(placeholder);
+       data-closeonselect python:'true' if closeOnSelect else 'false';
+       data-ajax ajax;
+       data-operator python:operator;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset"
+            tal:define="
+              title python:view.data.get('title', '');
+            "
+  >
+    <legend tal:content="python:view.translate(title)"
+            i18n:translate=""
+    >HTML Widget</legend>
+
+    <tal:facet on-error="structure python:error_view(error=error, cid=wid)">
+
+      <div class="faceted-widget-error"
+           tal:condition="not:vocabulary"
+      >
+        <div i18n:translate="">Invalid or empty vocabulary provided for this widget. This widget will be ignored in view mode.</div>
+      </div>
+
+      <form action="."
+            method="get"
+      >
+        <label class="multiselect-field"
+               tal:content="python:view.translate(title)"
+               tal:attributes="
+                 for wid;
+               "
+        ></label>
+        <input class="faceted_multiselect"
+               type="hidden"
+               tal:condition="ajax"
+               tal:attributes="
+                 name wid;
+                 id wid;
+                 multiple multiple;
+               "
+        />
+        <select class="faceted_multiselect form-select"
+                tal:condition="not:ajax"
+                tal:attributes="
+                  name wid;
+                  id wid;
+                  multiple multiple;
+                "
+        >
+          <option tal:condition="not:multiple"></option>
+          <tal:option repeat="term vocabulary">
+            <option tal:define="
+                      term_id python:term[0];
+                      term_label python:term[1];
+                      term_label python:view.translate(term_label);
+                      chbox_id string:${wid}_${term_id};
+                      chbox_id python:view.cleanup(chbox_id);
+                    "
+                    tal:content="term_label"
+                    tal:attributes="
+                      selected python:view.selected(term_id);
+                      value term_id;
+                      title term_label;
+                    "
+            ></option>
+          </tal:option>
+        </select>
+      </form>
+      <div class="faceted-operator"
+           title="match any/all filters bellow"
+           tal:condition="operator_visible"
+           i18n:attributes="title"
+      >
+        <label class="form-check-label"
+               tal:attributes="
+                 for string:$wid-operator;
+               "
+               i18n:translate=""
+        >match</label>
+        <a data-and="all"
+           data-name="operator"
+           data-or="any"
+           tal:content="operator_lable"
+           tal:attributes="
+             href string:#$wid-operator=$operator;
+             data-value string:$operator;
+           "
+           i18n:attributes="data-or; data-and"
+        ></a>
+      </div>
+    </tal:facet>
+  </fieldset>
+</div>

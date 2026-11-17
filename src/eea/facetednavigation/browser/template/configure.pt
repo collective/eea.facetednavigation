@@ -1,0 +1,321 @@
+<tal:block tal:define="
+             disabledLeft python:request.set('disable_plone.leftcolumn', 1);
+           " />
+<tal:block tal:define="
+             disabledRight python:request.set('disable_plone.rightcolumn', 1);
+           " />
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      xml:lang="en-US"
+      i18n:domain="eea"
+>
+
+  <body>
+
+    <div metal:fill-slot="content-core">
+
+      <!-- Add new widget -->
+      <fieldset class="faceted-edit-fieldset">
+        <legend i18n:translate="">Add new filter</legend>
+        <form id="faceted-edit-addwidget"
+              method="post"
+              title="Add widget"
+              tal:attributes="
+                action string:${context/absolute_url}/@@faceted_configure;
+              "
+              i18n:attributes="title"
+        >
+          <div id="faceted-widget-type">
+            <div class="field"
+                 id="faceted-field-wtype"
+            >
+              <label class="form-check-label"
+                     for="wtype"
+                     i18n:translate=""
+              >Type</label>
+              <span class="formHelp"
+                    i18n:translate=""
+              >
+            Type of the widget.
+              </span>
+              <select class="form-select"
+                      id="wtype"
+                      name="wtype"
+              >
+                <tal:option repeat="widget view/get_widget_types">
+                  <option tal:content="python:widget.widget_label"
+                          tal:attributes="
+                            value python:widget.widget_type;
+                          "
+                          i18n:translate=""
+                  ></option>
+                </tal:option>
+              </select>
+            </div>
+            <div class="field"
+                 id="faceted-field-wposition"
+            >
+              <label class="form-check-label"
+                     for="wposition"
+                     i18n:translate=""
+              >Position</label>
+              <span class="formHelp"
+                    i18n:translate=""
+              >
+            Position of the widget.
+              </span>
+              <select class="form-select"
+                      id="wposition"
+                      name="wposition"
+              >
+                <tal:position repeat="position python:view.positions">
+                  <option tal:content="python:position.title"
+                          tal:attributes="
+                            value python:position.value;
+                          "
+                          i18n:translate=""
+                  ></option>
+                </tal:position>
+              </select>
+            </div>
+            <div class="field"
+                 id="faceted-field-wsection"
+            >
+              <label class="form-check-label"
+                     for="wsection"
+                     i18n:translate=""
+              >Section</label>
+              <span class="formHelp"
+                    i18n:translate=""
+              >
+            Display widget in section.
+              </span>
+              <select class="form-select"
+                      id="wsection"
+                      name="wsection"
+              >
+                <tal:section repeat="section python:view.sections">
+                  <option tal:content="python:section.title"
+                          tal:attributes="
+                            value python:section.value;
+                          "
+                          i18n:translate=""
+                  ></option>
+                </tal:section>
+              </select>
+            </div>
+          </div>
+          <div id="faceted-widget-details"></div>
+          <div class="field"
+               style="clear: both"
+          >
+            <input class="context form-control"
+                   name="addWidget_button"
+                   type="submit"
+                   value="Add"
+                   i18n:attributes="value"
+            />
+          </div>
+        </form>
+      </fieldset>
+
+      <!-- Import / Export -->
+      <fieldset class="faceted-exportimport-fieldset">
+        <legend i18n:translate="">Import - Export configuration</legend>
+        <form id="faceted-importexport-widgets"
+              enctype="multipart/form-data"
+              method="post"
+              title="Import configuration"
+              tal:define="
+                criteria view/get_criteria;
+              "
+              tal:attributes="
+                action string:${context/absolute_url}/@@faceted_exportimport;
+              "
+              i18n:attributes="title"
+        >
+          <input class="form-control"
+                 id="import_file"
+                 name="import_file"
+                 type="file"
+          />
+          <div>
+            <input class="context btn btn-primary"
+                   id="import_button"
+                   name="import_button"
+                   type="submit"
+                   value="Import"
+                   i18n:attributes="value"
+            />
+            <input class="standalone btn btn-secondary"
+                   id="export_button"
+                   name="export_button"
+                   type="submit"
+                   value="Export"
+                   tal:attributes="
+                     style python:criteria and 'display: inline' or 'display: none';
+                   "
+                   i18n:attributes="value"
+            />
+          </div>
+        </form>
+      </fieldset>
+
+      <div id="faceted-edit-widgets-ajax"></div>
+      <div id="confirm-delete-dialog"
+           style="display: none"
+           i18n:translate=""
+      >
+    Are you sure you want to delete
+        <strong tal:content="string:html"
+                i18n:name="widget"
+        ></strong>
+         widget?
+      </div>
+
+      <!-- List widgets no ajax -->
+      <form id="faceted-edit-widgets"
+            method="post"
+            tal:define="
+              criteria view/get_criteria;
+            "
+            tal:attributes="
+              data-baseurl string:${context/absolute_url}/;
+              action string:${context/absolute_url}/@@faceted_configure;
+              style python:criteria and 'display: block' or 'display: none';
+            "
+      >
+
+        <table class="listing"
+               summary="Content listing"
+               i18n:attributes="summary"
+        >
+          <thead>
+            <tr>
+              <th class="nosort"
+                  style="width: 4%"
+              >
+                <input class="form-check-input"
+                       id="faceted-edit-select-all-items"
+                       alt="Select all items"
+                       name="selectButton"
+                       onclick="toggleSelect(this,'paths:list');"
+                       src="select_all_icon.gif"
+                       style="display: none"
+                       title="Select all items"
+                       type="checkbox"
+                       tal:attributes="
+                         src string:$portal_url/select_all_icon.gif;
+                       "
+                       i18n:attributes="title;alt"
+                />
+              </th>
+              <th class="nosort"
+                  i18n:translate=""
+              >Criterion details</th>
+              <th class="nosort"
+                  i18n:translate=""
+              >Order</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tal:table repeat="criterion criteria">
+              <tr tal:define="
+                    oddrow repeat/criterion/odd;
+                    cid python:criterion.getId();
+                    widget python:view.get_widget(criterion.get('widget'));
+                    hidden python:criterion.hidden;
+                    schema python:view.get_schema(criterion);
+                  "
+                  tal:attributes="
+                    class python:oddrow and 'even' or 'odd';
+                  "
+              >
+                <!-- Ids -->
+                <td style="text-align: center">
+                  <input class="form-check-input"
+                         name="paths:list"
+                         type="checkbox"
+                         tal:attributes="
+                           id criterion/getId;
+                           value criterion/getId;
+                         "
+                  />
+                </td>
+                <!-- Criterion details -->
+                <td>
+                  <div tal:attributes="
+                         id string:${cid}_widget_edit_properties;
+                       ">
+                    <div class="field">
+                      <label class="form-check-label"
+                             for="widget_type"
+                             i18n:translate=""
+                      >Widget type</label>
+                      <div tal:content="python:widget.widget_label"></div>
+                    </div>
+                    <tal:schema replace="structure python:schema" />
+                  </div>
+                </td>
+                <!-- Order -->
+                <td style="text-align: center;">
+                  <input class="context form-control"
+                         name="moveUp_button"
+                         title="Move Up"
+                         type="submit"
+                         value="&#8613;"
+                         tal:define="
+                           start repeat/criterion/start;
+                         "
+                         tal:attributes="
+                           name string:moveUp_button+++${criterion/getId};
+                           disabled python:start and 'disabled';
+                           style python:start and 'cursor: default';
+                           class python:start and 'standalone' or 'context';
+                         "
+                         i18n:attributes="title"
+                  />
+                  <input class="context form-control"
+                         name="moveDown_button"
+                         title="Move Down"
+                         type="submit"
+                         value="&#8615;"
+                         tal:define="
+                           end repeat/criterion/end;
+                         "
+                         tal:attributes="
+                           name string:moveDown_button+++${criterion/getId};
+                           disabled python:end and 'disabled';
+                           style python:end and 'cursor: default';
+                           class python:end and 'standalone' or 'context';
+                         "
+                         i18n:attributes="title"
+                  />
+                </td>
+              </tr>
+            </tal:table>
+          </tbody>
+        </table>
+
+        <div>
+          <input class="context btn btn-primary"
+                 name="saveChanges_button"
+                 type="submit"
+                 value="Save"
+                 i18n:attributes="value"
+          />
+          <input class="standalone btn btn-danger"
+                 name="deleteWidgets_button"
+                 type="submit"
+                 value="Delete"
+                 i18n:attributes="value"
+          />
+        </div>
+      </form>
+
+    </div>
+
+  </body>
+</html>

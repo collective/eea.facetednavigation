@@ -1,0 +1,19 @@
+<div class="faceted-widget-error"
+     tal:define="
+       error options/error|nothing;
+     "
+     i18n:domain="eea"
+>
+  <div i18n:translate="">
+    This widget will be ignored in view mode as an error occurred while
+    trying to render it. For more details please check the server log file. You
+    can also try to modify widget configuration in order to see what property is
+    causing this problem.
+  </div>
+  <dl>
+    <dt i18n:translate="">Error type:</dt>
+    <dd tal:content="python:error['type']"></dd>
+    <dt i18n:translate="">Error value:</dt>
+    <dd tal:content="python:error['value']"></dd>
+  </dl>
+</div>

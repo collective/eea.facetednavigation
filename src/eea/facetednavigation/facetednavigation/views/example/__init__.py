@@ -1,2 +1,0 @@
-""" Faceted view example
-"""

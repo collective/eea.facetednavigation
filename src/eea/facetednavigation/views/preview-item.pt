@@ -1,0 +1,25 @@
+<div class="card col-lg-3 col-md-4 col-sm-6 eea-preview-item">
+  <div class="card-image d-flex justify-content-center align-items-center"
+       style="height: 10rem;"
+       tal:define="
+         scale python:view.thumb();
+       "
+  >
+    <img tal:replace="structure scale" />
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"
+        tal:content="python:view.title()"
+    >Image title</h5>
+    <p class="card-text"
+       tal:content="python:view.description()"
+    >Description</p>
+    <a class="card-link stretched-link"
+       tal:attributes="
+         href python:view.url();
+         title python:view.description();
+       "
+       i18n:translate=""
+    >Read more</a>
+  </div>
+</div>
