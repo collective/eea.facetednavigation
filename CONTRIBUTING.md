@@ -1,6 +1,6 @@
 # How to contribute
 
-To start, is important to mention that we keep all EEA pacakges under EEA Organisation
+To start, is important to mention that we keep all EEA packages under EEA Organisation
 on GitHub (https://github.com/eea) and we fork them to Collective so everyone can
 contribute to them. We keep the repositories from Collective and EEA in sync.
 
@@ -32,7 +32,7 @@ official issue register.
 ## Making Changes
 
 * Fork the repository from EEA or directly commit within Collective fork
-* Make sure you added an entry under HISTORY.txt describing your changes
+* Make sure you added an entry under CHANGES.rst describing your changes
 * Make sure you have added the necessary tests for your changes (do not forget major browsers).
 * Make sure you have updated and added documentation when necessary.
 * Run _all_ the tests to assure nothing else was accidentally broken.
