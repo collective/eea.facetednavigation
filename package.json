@@ -54,7 +54,7 @@
         "build:webpack": "NODE_ENV=production webpack --config webpack.config.js",
         "build:css": "npm-run-all css-compile-plugins css-minify-plugins css-compile-view css-minify-view css-compile-edit css-minify-edit prettier",
         "watch:webpack": "NODE_ENV=development webpack --config webpack.config.js --watch",
-        "watch:scss": "nodemon --watch eea --ext scss --exec \"yarn build:css\"",
+        "watch:scss": "nodemon --watch src/eea --ext scss --exec \"yarn build:css\"",
         "start": "NODE_ENV=development webpack serve --config webpack.config.js",
         "css-compile-plugins": "sass --load-path=node_modules --style expanded --source-map --embed-sources --no-error-css resources/plugins.scss:src/eea/facetednavigation/browser/static/faceted-jquery.css",
         "css-minify-plugins": "cleancss --format breakWith=lf --source-map --source-map-inline-sources --output src/eea/facetednavigation/browser/static/faceted-jquery.min.css src/eea/facetednavigation/browser/static/faceted-jquery.css",
