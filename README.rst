@@ -27,7 +27,13 @@ it covers same functionality and it adds a lot more features.
 Upgrade to version 17.0+
 ========================
 * **Version 17.x** works only with **Plone 6.1 and 6.2**, on **Python 3.10 to 3.13**. Use **version 16.x** for Plone 5.2 and 6.0.
-* The ``eea`` namespace is now a PEP 420 native namespace (recent setuptools, as pinned by Plone 6.2, no longer ship ``pkg_resources``). If other ``eea.*`` packages of your site still use old-style namespaces, install `horse-with-no-namespace <https://pypi.org/project/horse-with-no-namespace/>`_ (Plone 6.2 does already).
+* The ``eea`` namespace is now a PEP 420 native namespace (recent setuptools, as pinned by Plone 6.2, no longer ship ``pkg_resources``). If other ``eea.*`` packages of your site still use old-style namespaces, do one of these:
+
+  * upgrade all of them to native namespaces;
+  * install all ``eea.*`` packages in a single ``site-packages`` (pip or uv, not buildout eggs);
+  * install `horse-with-no-namespace <https://pypi.org/project/horse-with-no-namespace/>`_ (Plone 6.2 does already).
+
+  Otherwise the site breaks. With setuptools 81 or later, ``import eea`` raises ``ModuleNotFoundError: No module named 'pkg_resources'`` and the instance does not start. With an older setuptools (Plone 6.1) and buildout eggs, the old-style ``eea/__init__.py`` hides this package and ``import eea.facetednavigation`` raises ``ModuleNotFoundError``.
 
 Upgrade to version 16.0+
 ========================
