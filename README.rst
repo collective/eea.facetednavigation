@@ -26,14 +26,14 @@ it covers same functionality and it adds a lot more features.
 
 Upgrade to version 17.0+
 ========================
-* **Version 17.x** works only with **Plone 6.1 and 6.2**, on **Python 3.10 to 3.13**. Use **version 16.x** for Plone 5.2 and 6.0.
+* **Version 17.x** works only with **Plone 6.2**, on **Python 3.10 to 3.14**. Use **version 16.x** for Plone 5.2, 6.0 and 6.1.
 * The ``eea`` namespace is now a PEP 420 native namespace (recent setuptools, as pinned by Plone 6.2, no longer ship ``pkg_resources``). If other ``eea.*`` packages of your site still use old-style namespaces, do one of these:
 
   * upgrade all of them to native namespaces;
   * install all ``eea.*`` packages in a single ``site-packages`` (pip or uv, not buildout eggs);
   * install `horse-with-no-namespace <https://pypi.org/project/horse-with-no-namespace/>`_ (Plone 6.2 does already).
 
-  Otherwise the site breaks. With setuptools 81 or later, ``import eea`` raises ``ModuleNotFoundError: No module named 'pkg_resources'`` and the instance does not start. With an older setuptools (Plone 6.1) and buildout eggs, the old-style ``eea/__init__.py`` hides this package and ``import eea.facetednavigation`` raises ``ModuleNotFoundError``.
+  Otherwise ``import eea`` raises ``ModuleNotFoundError: No module named 'pkg_resources'`` and the instance does not start.
 
 Upgrade to version 16.0+
 ========================
@@ -121,7 +121,7 @@ The development environment uses `uv <https://docs.astral.sh/uv/>`_ and Plone 6.
 Tests and code quality run through tox, configured by `plone.meta <https://github.com/plone/meta>`_::
 
     make test         # Plone 6.2.3
-    make test-all     # lint, Plone 6.1 and 6.2 on Python 3.10 to 3.13, dependencies
+    make test-all     # lint, Plone 6.2 on Python 3.10 to 3.14, dependencies
     make format       # pyupgrade, isort, black, zpretty
 
 The CSS and JS bundles of ``browser/static`` are built with yarn (Node)::
@@ -297,7 +297,7 @@ Source code
 - `Plone 2 and 3 on github <https://github.com/eea/eea.facetednavigation/tree/plone3>`_
 - `Plone 4 on github <https://github.com/eea/eea.facetednavigation/tree/plone4>`_
 - `Plone 5.2 and 6.0 on github <https://github.com/eea/eea.facetednavigation>`_ (16.x)
-- `Plone 6.1+ on github <https://github.com/collective/eea.facetednavigation>`_
+- `Plone 6.2+ on github <https://github.com/collective/eea.facetednavigation>`_
 
 
 Eggs repository

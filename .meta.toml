@@ -38,5 +38,5 @@ check_manifest_ignores = """
 """
 
 [tox]
-test_matrix = {"6.2" = ["3.13", "3.12", "3.11", "3.10"], "6.1" = ["3.13", "3.12", "3.11", "3.10"]}
-constraints_files = {"6.2" = "https://dist.plone.org/release/6.2.3/constraints.txt", "6.1" = "https://dist.plone.org/release/6.1-latest/constraints.txt"}
+test_matrix = {"6.2" = ["*"]}
+constraints_files = {"6.2" = "https://dist.plone.org/release/6.2.3/constraints.txt"}

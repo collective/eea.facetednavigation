@@ -13,7 +13,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Framework :: Plone",
-    "Framework :: Plone :: 6.1",
     "Framework :: Plone :: 6.2",
     "Framework :: Plone :: Addon",
     "Operating System :: OS Independent",
@@ -24,6 +23,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 license = "GPL-2.0-only"
