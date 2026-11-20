@@ -1,0 +1,1 @@
+"""Portlet widget"""

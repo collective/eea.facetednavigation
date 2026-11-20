@@ -1,0 +1,113 @@
+<div class="faceted-widget faceted-tagscloud-widget"
+     style="display: none"
+     tal:define="
+       error_view nocall:context/@@faceted.widget.error;
+       wid python:view.data.getId();
+       hidden python:view.hidden;
+       hidezerocount python:view.hidezerocount;
+       default_value python:view.data.get('default', u'');
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+       css python:view.countable and css + ' faceted-count' or css;
+       css python:hidezerocount and css + ' faceted-zero-count-hidden' or css;
+       cloud python:view.data.get('cloud', 'list');
+       sizemin python:view.data.get('sizemin', 10);
+       sizemax python:view.data.get('sizemax', 20);
+       colormin python:view.data.get('colormin', 'A1BE7E') or 'A1BE7E';
+       colormax python:view.data.get('colormax', '95B229') or '95B229';
+       height python:view.data.get('height', 200);
+       maxitems python:int(view.data.get('maxitems', 0)) or 0;
+       kwargs options/kwargs|python:{};
+     "
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset">
+    <legend tal:define="
+              title python:view.data.get('title', '');
+            "
+            tal:content="
+    python:view.translate(title)"
+            i18n:translate=""
+    >HTML Widget</legend>
+
+    <tal:widget define="
+                  vocabulary python:kwargs.get('vocabulary', view.vocabulary());
+                  all python:next(vocabulary);
+                "
+                tal:on-error="structure python:error_view(error=error, cid=wid)"
+    >
+      <ul class="tags-cloud"
+          tal:attributes="
+            id string:${wid};
+          "
+      >
+        <li tal:attributes="
+              class python:default_value == '' and 'faceted-tag-selected' or '';
+              value python:(all[2] == -1) and view.randint or all[2];
+              title string:All;
+              id string:${wid}all;
+            "
+            i18n:attributes="title"
+            i18n:translate=""
+        >All</li>
+        <tal:tag repeat="tag python:vocabulary">
+          <li tal:define="
+                tag_id python:tag[0];
+                tag_id python:tag_id.replace(' ', '_-_').replace('/', '_--_');
+                tag_label python:tag[1];
+                tag_label python:view.translate(tag_label);
+                tag_count python:(tag[2] == -1) and view.randint or tag[2]+1;
+              "
+              tal:condition="python:not hidezerocount or (hidezerocount and tag_count != 1)"
+              tal:content="
+        python:view.cut_text(tag_label)"
+              tal:attributes="
+                class python:tag_id == default_value and 'faceted-tag-selected' or '';
+                value python:tag_count;
+                title tag_label;
+                id string:${wid}${tag_id};
+              "
+          ></li>
+        </tal:tag>
+      </ul>
+      <div style="display:none">
+        <span tal:content="cloud"
+              tal:attributes="
+                id string:${wid}-cloud;
+              "
+        ></span>
+        <span tal:content="sizemin"
+              tal:attributes="
+                id string:${wid}-sizemin;
+              "
+        ></span>
+        <span tal:content="sizemax"
+              tal:attributes="
+                id string:${wid}-sizemax;
+              "
+        ></span>
+        <span tal:content="colormin"
+              tal:attributes="
+                id string:${wid}-colormin;
+              "
+        ></span>
+        <span tal:content="colormax"
+              tal:attributes="
+                id string:${wid}-colormax;
+              "
+        ></span>
+        <span tal:content="height"
+              tal:attributes="
+                id string:${wid}-height;
+              "
+        ></span>
+      </div>
+    </tal:widget>
+
+  </fieldset>
+</div>

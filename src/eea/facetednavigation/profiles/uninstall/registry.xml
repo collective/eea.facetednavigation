@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<registry>
+  <record field="disable_diazo_rules_ajax"
+          interface="eea.facetednavigation.interfaces.IEEASettings"
+          name="eea.facetednavigation.interfaces.IEEASettings.disable_diazo_rules_ajax"
+          remove="True"
+  >
+  </record>
+</registry>

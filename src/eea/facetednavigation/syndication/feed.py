@@ -1,0 +1,19 @@
+"""Feed"""
+
+from Products.CMFPlone.browser.syndication.adapters import FolderFeed
+from zope import component
+
+
+class FacetedFeed(FolderFeed):
+    """Feed"""
+
+    def _brains(self):
+        """Brains"""
+        request = getattr(
+            self.context, "REQUEST", getattr(self.context, "request", None)
+        )
+        handler = component.getMultiAdapter(
+            (self.context, request), name="faceted_query"
+        )
+
+        return handler.query(ajax=False)

@@ -1,0 +1,1 @@
+"""See ../docs/syndication.txt"""

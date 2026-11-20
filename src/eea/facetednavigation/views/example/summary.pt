@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      xml:lang="en"
+      i18n:domain="eea"
+>
+
+  <body>
+
+    <metal:content-core fill-slot="content-core">
+
+      <tal:comment condition="nothing">
+        <!--
+      Defining the 'content-core' macro is mandatory
+      for this to work as a Faceted View.
+
+      Also, in order to have results overwritten by Faceted you have to define
+      folderContents like::
+
+          tal:define="folderContents folderContents | <something else>;"
+
+      This way when you use this view outside faceted, <something else> will
+      be used, otherwise 'folderContents' is used;
+
+      Remember, when you use this template as a faceted view, 'view' variable
+      is an instance of a class from eea.facetednavigation package,
+      that's why you get a lot of AttributeErrors. In order to access your
+      custom controller define a 'self' variable as below and use
+      that instead of 'view.my_stuff()'::
+
+          tal:define="
+            self nocall:context/@@my-custom-faceted-view;
+            myStuff python:self.my_stuff()"
+
+      Having the batch present within the results page is also important,
+      otherwise you may get no facets on the page. It doesn't matter
+      if you put it on the top or at the bottom of your results, it's
+      important to have at least one of it::
+
+          <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+      Still, there is a trick you can do to avoid the batch macro. Just
+      add a HTML element with class="pagination" like::
+
+          <div class="pagination" style="display: none"></div>
+
+    -->
+      </tal:comment>
+
+      <metal:block define-macro="content-core">
+        <div tal:define="
+               self nocall:context/@@faceted-summary-view;
+               folderContents folderContents | python:context.getFolderContents();
+               Batch python:modules['Products.CMFPlone'].Batch;
+               b_start python:request.get('b_start', 0);
+               batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, 100, int(b_start), orphan=2);
+             ">
+
+          <div metal:use-macro="context/batch_macros/macros/navigation"></div>
+
+          <dl>
+            <tal:entry repeat="brain folderContents">
+              <dt tal:content="brain/Title"></dt>
+              <dd tal:content="python:self.truncate(brain.Description)"></dd>
+            </tal:entry>
+          </dl>
+
+          <div metal:use-macro="context/batch_macros/macros/navigation"></div>
+
+        </div>
+
+      </metal:block>
+    </metal:content-core>
+  </body>
+</html>

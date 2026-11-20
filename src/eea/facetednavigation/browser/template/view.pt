@@ -1,0 +1,55 @@
+<tal:left define="
+            hidden python:request.set('disable_plone.leftcolumn', view.hide_left_portlets);
+          " />
+<tal:right define="
+             hidden python:request.set('disable_plone.rightcolumn', view.hide_right_portlets);
+           " />
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      xml:lang="en-US"
+      i18n:domain="eea"
+>
+
+  <body>
+
+    <div metal:fill-slot="content-core">
+
+      <!-- Folder contents -->
+      <div class="faceted-form"
+           id="faceted-form"
+           metal:define-macro="widgets"
+           tal:define="
+             mode view/mode | string:view;
+           "
+           tal:attributes="
+             data-mode mode;
+             data-baseurl string:${context/absolute_url}/;
+           "
+      >
+
+        <!-- Basic/Extended search -->
+        <div class="faceted-sections-buttons">
+          <a class="faceted-sections-buttons-more"
+             href="#"
+             i18n:translate=""
+          >More filters</a>
+          <a class="faceted-sections-buttons-less"
+             href="#"
+             i18n:translate=""
+          >Less filters</a>
+        </div>
+
+        <metal:widgets use-macro="here/@@faceted_widgets_macros/macros/widgets" />
+
+        <!-- Faceted version -->
+        <div id="faceted-version"
+             style="display: none"
+             tal:content="here/@@faceted_version|string:"
+        ></div>
+      </div>
+
+    </div>
+  </body>
+</html>

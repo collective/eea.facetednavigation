@@ -24,6 +24,17 @@ it covers same functionality and it adds a lot more features.
 
 .. contents::
 
+Upgrade to version 17.0+
+========================
+* **Version 17.x** works only with **Plone 6.2**, on **Python 3.10 to 3.14**. Use **version 16.x** for Plone 5.2, 6.0 and 6.1.
+* The ``eea`` namespace is now a PEP 420 native namespace (recent setuptools, as pinned by Plone 6.2, no longer ship ``pkg_resources``). If other ``eea.*`` packages of your site still use old-style namespaces, do one of these:
+
+  * upgrade all of them to native namespaces;
+  * install all ``eea.*`` packages in a single ``site-packages`` (pip or uv, not buildout eggs);
+  * install `horse-with-no-namespace <https://pypi.org/project/horse-with-no-namespace/>`_ (Plone 6.2 does already).
+
+  Otherwise ``import eea`` raises ``ModuleNotFoundError: No module named 'pkg_resources'`` and the instance does not start.
+
 Upgrade to version 16.0+
 ========================
 * **Version 16.x** is **NOT** backward compatible and **it works only** with **Python 3 / Plone 5+**
@@ -46,7 +57,7 @@ Upgrade to version 10.0+
 * If you have third-party Faceted Navigation Widgets (registered outside
   eea.facetednavigation package) you will need to upgrade them to z3c.form
   and explicitly register JS/CSS resources within registry.xml/cssregistry.xml/jsregistry,xml
-  Take `faceted text widget <https://github.com/collective/eea.facetednavigation/tree/master/eea/facetednavigation/widgets/text>`_  as an example;
+  Take `faceted text widget <https://github.com/collective/eea.facetednavigation/tree/main/src/eea/facetednavigation/widgets/text>`_  as an example;
 
 Main features
 =============
@@ -101,7 +112,21 @@ Install
 Develop
 =======
 
-* See `DEVELOP.md <https://github.com/eea/eea.facetednavigation/blob/master/DEVELOP.md>`_
+The development environment uses `uv <https://docs.astral.sh/uv/>`_ and Plone 6.2.3::
+
+    make install      # Python 3.12 virtualenv, Plone and this add-on, instance configuration
+    make create-site  # Plone site with EEA Faceted Navigation installed
+    make start        # http://localhost:8080 (admin:admin)
+
+Tests and code quality run through tox, configured by `plone.meta <https://github.com/plone/meta>`_::
+
+    make test         # Plone 6.2.3
+    make test-all     # lint, Plone 6.2 on Python 3.10 to 3.14, dependencies
+    make format       # pyupgrade, isort, black, zpretty
+
+The CSS and JS bundles of ``browser/static`` are built with yarn (Node)::
+
+    make resources
 
 Getting started
 ===============
@@ -175,8 +200,8 @@ Suggestions
 -----------
 
 You can add a new autocomplete source by registering a IAutocompleteSuggest browser view, you can see an example in
-`eea/facetednavigation/tests/autocomplete.py <https://github.com/eea/eea.facetednavigation/blob/master/eea/facetednavigation/tests/autocomplete.py>`_ and
-`eea/facetednavigation/tests/autocomplete.zcml <https://github.com/eea/eea.facetednavigation/blob/master/eea/facetednavigation/tests/autocomplete.zcml>`_
+`src/eea/facetednavigation/tests/autocomplete.py <https://github.com/collective/eea.facetednavigation/blob/main/src/eea/facetednavigation/tests/autocomplete.py>`_ and
+`src/eea/facetednavigation/tests/autocomplete.zcml <https://github.com/collective/eea.facetednavigation/blob/main/src/eea/facetednavigation/tests/autocomplete.zcml>`_
 
 You also need to configure Solr to include **/suggest** requestHandler. Within your **solrconfig.xml** add::
 
@@ -271,7 +296,8 @@ Source code
 
 - `Plone 2 and 3 on github <https://github.com/eea/eea.facetednavigation/tree/plone3>`_
 - `Plone 4 on github <https://github.com/eea/eea.facetednavigation/tree/plone4>`_
-- `Plone 5+ on github <https://github.com/eea/eea.facetednavigation>`_
+- `Plone 5.2 and 6.0 on github <https://github.com/eea/eea.facetednavigation>`_ (16.x)
+- `Plone 6.2+ on github <https://github.com/collective/eea.facetednavigation>`_
 
 
 Eggs repository

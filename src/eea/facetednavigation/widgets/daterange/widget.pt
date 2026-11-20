@@ -1,0 +1,120 @@
+<div class="faceted-widget faceted-daterange-widget"
+     style="display: none"
+     tal:define="
+       error_view nocall:context/@@faceted.widget.error;
+       wid python:view.data.getId();
+       yearRange python:view.cal_year_range;
+       usePloneFormat python:view.use_plone_date_format;
+       dateFormat python:view.js_date_format;
+       language python:view.js_language;
+       hidden python:view.hidden;
+       default_value python:view.default;
+       default_start python:default_value[0];
+       default_end python:default_value[1];
+       labelStart python:view.data.get('labelStart', 'Start date');
+       labelEnd python:view.data.get('labelEnd', 'End date');
+       placeholderStart python:view.data.get('placeholderStart', '');
+       placeholderEnd python:view.data.get('placeholderEnd', '');
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+     "
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset">
+    <legend tal:define="
+              title python:view.data.get('title', '');
+            "
+            tal:content="
+  python:view.translate(title)"
+            i18n:translate=""
+    >Date range widget</legend>
+
+    <form class="faceted-daterange-widget-form"
+          action="."
+          method="get"
+          tal:on-error="structure python:error_view(error=error, cid=wid)"
+    >
+      <div tal:attributes="
+             id string:${wid}_start;
+           ">
+        <label class="form-check-label"
+               tal:content="python:view.translate(labelStart)"
+               tal:attributes="
+                 for string:$wid-start-input;
+               "
+               i18n:translate=""
+        >Start date</label>
+        <input class="form-control"
+               name="start"
+               title="Start date"
+               type="text"
+               tal:attributes="
+                 id string:$wid-start-input;
+                 placeholder python:view.translate(placeholderStart);
+                 value default_start;
+               "
+               i18n:attributes="title"
+        />
+      </div>
+      <div tal:attributes="
+             id string:${wid}_end;
+           ">
+        <label class="form-check-label"
+               tal:content="python:view.translate(labelEnd)"
+               tal:attributes="
+                 for string:$wid-end-input;
+               "
+               i18n:translate=""
+        >End date</label>
+        <input class="form-control"
+               name="end"
+               title="End date"
+               type="text"
+               tal:attributes="
+                 id string:$wid-end-input;
+                 placeholder python:view.translate(placeholderEnd);
+                 value default_end;
+               "
+               i18n:attributes="title"
+        />
+      </div>
+      <div tal:attributes="
+             id string:${wid}_errors;
+           "></div>
+      <input name="calYearRange"
+             type="hidden"
+             tal:attributes="
+               id string:${wid}_calYearRange;
+               value string:$yearRange;
+             "
+      />
+      <input name="usePloneFormat"
+             type="hidden"
+             tal:attributes="
+               id string:${wid}_usePloneFormat;
+               value string:$usePloneFormat;
+             "
+      />
+      <input name="dateFormat"
+             type="hidden"
+             tal:attributes="
+               id string:${wid}_dateFormat;
+               value string:$dateFormat;
+             "
+      />
+      <input name="language"
+             type="hidden"
+             tal:attributes="
+               id string:${wid}_language;
+               value string:$language;
+             "
+      />
+    </form>
+
+  </fieldset>
+</div>

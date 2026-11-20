@@ -1,0 +1,97 @@
+<div class="row"
+     metal:define-macro="widgets"
+     tal:define="
+       mode mode | string:edit;
+       view_mode python:mode == 'view';
+       edit_mode python:mode == 'edit';
+       search_mode python:mode == 'search';
+       faceted_query nocall:here/@@faceted_query;
+       faceted_html python:faceted_query(ajax=False) if (not view.disable_smart_facets and view_mode) else '';
+       visible python:edit_mode or search_mode or view.check_display_criteria(faceted_html);
+       positions python:visible and view.positions or [];
+       positions python:dict((x.value, x.title) for x in positions);
+       left_col_grid python:view.left_col_grid(mode);
+       right_col_grid python:view.right_col_grid(mode);
+       center_col_grid python:view.center_col_grid(mode);
+     "
+     i18n:domain="eea"
+>
+
+  <!-- Top -->
+  <div class="faceted-area top-area col-lg-12"
+       id="top-area"
+       tal:define="
+         position string:top;
+       "
+  >
+    <metal:position use-macro="here/@@faceted_macros/macros/position" />
+  </div>
+
+  <!-- Left column -->
+  <div id="left-area"
+       tal:define="
+         position string:left;
+       "
+       tal:attributes="
+         class string:faceted-area left-area ${left_col_grid};
+       "
+  >
+    <metal:position use-macro="here/@@faceted_macros/macros/position" />
+  </div>
+
+  <!-- Center -->
+  <div id="center-area"
+       tal:attributes="
+         class string:faceted-area center-area ${center_col_grid};
+       "
+  >
+    <div class="faceted-area center-content-area"
+         id="center-content-area"
+    >
+      <!-- Center top -->
+      <div class="faceted-area center-top-area"
+           id="center-top-area"
+           tal:define="
+             position string:center;
+           "
+      >
+        <metal:position use-macro="here/@@faceted_macros/macros/position" />
+      </div>
+
+      <!-- Content -->
+      <metal:results use-macro="here/@@faceted_macros/macros/results" />
+
+      <!-- Center bottom -->
+      <div class="faceted-area center-bottom-area"
+           id="center-bottom-area"
+           tal:define="
+             position string:bottomcenter;
+           "
+      >
+        <metal:position use-macro="here/@@faceted_macros/macros/position" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Right -->
+  <div id="right-area"
+       tal:define="
+         position string:right;
+       "
+       tal:attributes="
+         class string:faceted-area right-area ${right_col_grid};
+       "
+  >
+    <metal:position use-macro="here/@@faceted_macros/macros/position" />
+  </div>
+
+  <!-- Bottom -->
+  <div class="faceted-area bottom-area col-lg-12"
+       id="bottom-area"
+       tal:define="
+         position string:bottom;
+       "
+  >
+    <metal:position use-macro="here/@@faceted_macros/macros/position" />
+  </div>
+</div>

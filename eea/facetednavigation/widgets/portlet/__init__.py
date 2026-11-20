@@ -1,2 +1,0 @@
-""" Portlet widget
-"""

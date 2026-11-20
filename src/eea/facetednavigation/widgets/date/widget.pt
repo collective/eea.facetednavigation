@@ -1,0 +1,68 @@
+<div class="faceted-widget faceted-date-widget"
+     style="display: none"
+     tal:define="
+       error_view nocall:context/@@faceted.widget.error;
+       wid python:view.data.getId();
+       hidden python:view.hidden;
+       default_value python:view.default;
+       default_from python:default_value[0];
+       default_to python:default_value[1];
+       vocabulary python:view.select_vocabulary;
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+     "
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset">
+    <legend tal:define="
+              title python:view.data.get('title', '');
+            "
+            tal:content="
+  python:view.translate(title)"
+            i18n:translate=""
+    >Date Widget</legend>
+
+    <form class="faceted-date-widget-form"
+          action="."
+          method="get"
+          tal:on-error="structure python:error_view(error=error, cid=wid)"
+    >
+      <select class="form-select"
+              name="from"
+              tal:attributes="
+                id string:$wid-from;
+              "
+      >
+        <tal:option repeat="item vocabulary">
+          <option tal:content="python:item[1]"
+                  tal:attributes="
+                    value python:item[0];
+                    selected python:item[0] == default_from and 'selected' or None;
+                  "
+          ></option>
+        </tal:option>
+      </select>
+      <select class="form-select"
+              name="to"
+              tal:attributes="
+                id string:$wid-to;
+              "
+      >
+        <tal:option repeat="item vocabulary">
+          <option tal:content="python:item[1]"
+                  tal:attributes="
+                    value python:item[0];
+                    selected python:item[0] == default_to and 'selected' or None;
+                  "
+          ></option>
+        </tal:option>
+      </select>
+    </form>
+
+  </fieldset>
+</div>

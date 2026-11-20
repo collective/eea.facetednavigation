@@ -1,2 +1,0 @@
-""" Multiselect widget
-"""

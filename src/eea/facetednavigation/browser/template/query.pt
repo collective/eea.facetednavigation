@@ -1,0 +1,18 @@
+<metal:block tal:define="
+               plone_view python:context.restrictedTraverse('@@plone');
+             ">
+  <tal:main define="
+              batch_base_url here/absolute_url;
+              folderContents view/brains;
+              contentFilter python: {'portal_type': 'FACET-EMPTY'} if not folderContents else {};
+              here python:view.get_context(folderContents);
+            ">
+    <tal:def define="
+               kssClassesView context/@@kss_field_decorator_view | nothing;
+               getKssClasses nocall:kssClassesView/getKssClassesInlineEditable | nothing;
+               templateId template/getId | nothing;
+             ">
+      <metal:block use-macro="view/macros" />
+    </tal:def>
+  </tal:main>
+</metal:block>

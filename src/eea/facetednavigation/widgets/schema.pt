@@ -1,0 +1,68 @@
+<div class="faceted-widget-edit"
+     metal:define-macro="schema"
+     tal:define="
+       mode string:search;
+       errors python:{};
+       criterion python:view.data;
+       cid python:criterion.getId();
+       faceted_widget python:view.widget;
+       schematas faceted_widget/groups;
+     "
+     tal:attributes="
+       id string:${cid}_edit_widget;
+     "
+>
+
+  <ul style="display: none">
+    <tal:schemata repeat="schemata schematas">
+      <li tal:attributes="
+            id string:${cid}-${schemata/label}-header;
+          ">
+        <a tal:attributes="
+             href string:#${cid}-${schemata/label}-tab;
+           ">
+          <span tal:content="python:view.getTranslatedSchemaLabel(schemata.label)"
+                i18n:translate=""
+          >Edit fields</span>
+        </a>
+      </li>
+    </tal:schemata>
+  </ul>
+  <div class="panes">
+    <tal:schemata repeat="schemata schematas">
+      <div tal:attributes="
+             id string:${cid}-${schemata/label}-tab;
+           ">
+        <tal:widget tal:repeat="widget schemata/widgets/values">
+          <div class="field"
+               tal:attributes="
+                 class string:field field-${cid}-${widget/id};
+               "
+          >
+            <label class="form-check-label"
+                   tal:content="widget/label"
+                   tal:attributes="
+                     for widget/id;
+                   "
+            ></label>
+            <span class="required"
+                  title="Required"
+                  tal:condition="widget/required"
+                  i18n:attributes="title"
+            >&nbsp;</span>
+            <div class="fieldErrorBox"
+                 tal:condition="widget/error"
+                 tal:content="structure widget/error/render"
+            ></div>
+            <span class="formHelp"
+                  tal:condition="widget/label"
+                  tal:content="widget/field/description"
+            >Widget description</span>
+            <tal:widget tal:replace="structure widget/render">Widget</tal:widget>
+          </div>
+        </tal:widget>
+      </div>
+    </tal:schemata>
+  </div>
+
+</div>

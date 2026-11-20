@@ -8,7 +8,7 @@ module.exports = [
         //     minimize: false
         // },
         output: {
-            path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
+            path: path.resolve(__dirname, 'src/eea/facetednavigation/browser/static'),
             filename: 'faceted-jquery.min.js',
         },
         externals: {
@@ -21,7 +21,7 @@ module.exports = [
         //     minimize: false
         // },
         output: {
-            path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
+            path: path.resolve(__dirname, 'src/eea/facetednavigation/browser/static'),
             filename: 'faceted-view.min.js',
         },
     },
@@ -31,7 +31,7 @@ module.exports = [
         //     minimize: false
         // },
         output: {
-            path: path.resolve(__dirname, 'eea/facetednavigation/browser/static'),
+            path: path.resolve(__dirname, 'src/eea/facetednavigation/browser/static'),
             filename: 'faceted-edit.min.js',
         },
     },

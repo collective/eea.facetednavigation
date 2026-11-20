@@ -1,6 +1,6 @@
-include *.md *.rst *.txt
+include *.md *.rst
 graft docs
-graft eea
+graft src
 global-exclude *pyc
 global-exclude *~
 global-exclude *.un~
@@ -10,11 +10,10 @@ exclude .eslintrc.js
 exclude .prettierignore
 exclude .prettierrc.json
 exclude babel.config.js
-exclude docker-compose.yml
+exclude instance.yaml
 exclude Makefile
 exclude package.json
 exclude webpack.config.js
 exclude yarn.lock
-exclude zope.conf
-prune .vscode
 prune resources
+prune scripts

@@ -1,0 +1,59 @@
+<div class="faceted-widget faceted-criteria-widget"
+     style="display: none"
+     tal:define="
+       wid python:view.data.getId();
+       hidden python:view.hidden;
+       css string:faceted-widget ${view/css_class};
+       css python:hidden and css + ' faceted-widget-hidden' or css;
+     "
+     tal:attributes="
+       id string:${wid}_widget;
+       class css;
+     "
+     i18n:domain="eea"
+>
+
+  <fieldset class="widget-fieldset faceted-criteria">
+    <legend tal:define="
+              title python:view.data.get('title', '');
+            "
+            tal:content="
+    python:view.translate(title)"
+            i18n:translate=""
+    >Current filters</legend>
+    <div class="widget-body">
+      <dl tal:attributes="
+            id wid;
+          "><dt></dt></dl>
+
+      <div class="faceted-criteria-hide-show"
+           tal:condition="view/data/hidecriteriaenabled|python:1"
+      >
+        <a class="faceted-criteria-hide"
+           href="#"
+        >
+          <tal:block i18n:translate="">Hide filters</tal:block>
+        </a>
+        <a class="faceted-criteria-show"
+           href="#"
+        >
+          <tal:block i18n:translate="">Show filters</tal:block>
+        </a>
+        <span class="faceted-criteria-count">(0)</span>
+      </div>
+
+      <div class="faceted-criteria-reset">
+        <a href="#"
+           title="Remove all filters"
+           tal:attributes="
+             id string:${wid}_reset;
+           "
+           i18n:attributes="title"
+        >
+          <tal:block i18n:translate="">Remove all</tal:block>
+        </a>
+      </div>
+    </div>
+
+  </fieldset>
+</div>
