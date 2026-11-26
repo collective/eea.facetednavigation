@@ -4,6 +4,9 @@ Changelog
 17.0.0 (unreleased)
 -------------------
 
+* Fix displayed value for autocomplete widget
+  [mpeeters]
+
 * Breaking: migrate to PEP 420 native namespaces (setuptools 81 / Plone 6.2).
   Support Plone 6.2 on Python 3.10 to 3.14 only: Plone 5.2, 6.0 and 6.1
   are dropped (use 16.x).

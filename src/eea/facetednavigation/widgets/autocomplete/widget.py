@@ -38,8 +38,22 @@ class Widget(AbstractWidget):
             string = string.replace(char, self.quotestring(char))
         return string
 
+    def parse_json(self, value):
+        if isinstance(value, (tuple, list)):
+            try:
+                return [json.loads(v) for v in value]
+            except ValueError:  # This can happen with saved urls
+                return value
+        try:
+            return json.loads(value)
+        except ValueError:
+            return value
+
     def normalize_string(self, value):
-        """Process string values to be used in catalog query"""
+        """Process string values to be used in catalog query.
+        """
+        if isinstance(value, dict):
+            value = value["id"]
         # Ensure words are string instances as ZCatalog requires strings
         if isinstance(value, bytes):
             value = value.decode("utf-8")
@@ -52,9 +66,11 @@ class Widget(AbstractWidget):
 
     def normalize(self, value):
         """Process value to be used in catalog query"""
-        # select2 send us selected values separated by a comma
-        if "," in value:
-            value = value.split(",")
+        value = self.parse_json(value)
+        if ',' in value:
+            value = value.split(',')
+        if isinstance(value, dict):
+            value = value["id"]
         if isinstance(value, (tuple, list)):
             value = self.normalize_list(value)
         elif isinstance(value, (bytes, str)):
