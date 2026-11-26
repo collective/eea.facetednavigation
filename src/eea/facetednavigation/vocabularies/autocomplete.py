@@ -37,6 +37,8 @@ class IAutocompleteSuggest(Interface):
 
     def __call__(self):
         """
-        Should return a json array of value/label objects.
-        eg: [{'value':'42', 'label:'Answer to some question..'}, ...]
+        Should return a json array of id/text objects, as expected by Select2.
+        eg: [{"id": "42", "text": "Answer to some question.."}, ...]
+
+        The ``id`` is used in the catalog query, the ``text`` is displayed.
         """

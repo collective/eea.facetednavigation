@@ -81,6 +81,28 @@ Faceted.AutocompleteWidget = function (wid) {
 };
 
 Faceted.AutocompleteWidget.prototype = {
+    // Selections are stored in Faceted.Query (and the URL) as JSON encoded
+    // {id, text} objects, so the label survives a page reload.
+    encode: function (item) {
+        return JSON.stringify({ id: item.id, text: item.text });
+    },
+
+    // Decode a stored value. Plain values (free text, defaults, URLs saved
+    // before selections were JSON encoded) are used as both id and text.
+    decode: function (raw) {
+        var val = null;
+        try {
+            val = JSON.parse(raw);
+        } catch {
+            val = null;
+        }
+        if (val === null || typeof val !== "object" || val.id === undefined) {
+            return { id: String(raw), text: String(raw) };
+        }
+        var text = val.text === undefined || val.text === null ? val.id : val.text;
+        return { id: String(val.id), text: String(text) };
+    },
+
     select_change: function (element) {
         if (!jQuery(element).val()) {
             element = null;
@@ -94,16 +116,15 @@ Faceted.AutocompleteWidget.prototype = {
     },
 
     do_query: function (element) {
-        var raw_value = this.select.select2("data");
-        var value = null;
-        if (raw_value && !Array.isArray(raw_value)) {
-            value = [value];
-        } else if (raw_value && Array.isArray(raw_value)) {
-            value = [];
-            jQuery.each(raw_value, function (idx, val) {
-                value.push(JSON.stringify(val));
-            });
+        var self = this;
+        var data = this.select.select2("data");
+        var value = [];
+        if (data && !Array.isArray(data)) {
+            data = [data];
         }
+        jQuery.each(data || [], function (idx, item) {
+            value.push(self.encode(item));
+        });
 
         if (!element) {
             this.selected = [];
@@ -118,8 +139,11 @@ Faceted.AutocompleteWidget.prototype = {
         }
 
         var current = Faceted.Query[this.wid] || [];
+        var current_ids = current.map(function (raw) {
+            return self.decode(raw).id;
+        });
         jQuery.each(value, function (idx, val) {
-            if (!current.includes(val)) {
+            if (!current_ids.includes(self.decode(val).id)) {
                 current.push(val);
             }
         });
@@ -145,12 +169,7 @@ Faceted.AutocompleteWidget.prototype = {
 
         var data = [];
         jQuery.each(value, function (idx, raw_val) {
-            try {
-                var val = JSON.parse(raw_val);
-            } catch {
-                val = { id: raw_val, text: raw_val };
-            }
-            var item = { id: val.id, text: val.text };
+            var item = self.decode(raw_val);
             if (self.multiple) {
                 data.push(item);
             } else {
@@ -207,14 +226,16 @@ Faceted.AutocompleteWidget.prototype = {
         var elements = Faceted.Query[this.wid];
         elements = elements ? elements : [];
         jQuery.each(elements, function () {
-            var label = this.toString();
-            if (label.length > 0) {
+            var raw = this.toString();
+            var item = widget.decode(raw);
+            var label = item.text;
+            if (raw.length > 0) {
                 var span = jQuery('<span class="faceted-autocomplete-criterion">');
                 var link = jQuery('<a href="#" class="faceted-remove">remove</a>');
-                link.attr("id", "criteria_" + widget.wid + "_" + label);
+                link.attr("id", "criteria_" + widget.wid + "_" + item.id);
                 link.attr("title", "Remove " + label + " filter");
                 link.on("click", function () {
-                    widget.criteria_remove(label);
+                    widget.criteria_remove(raw);
                     return false;
                 });
                 span.append(link);
@@ -252,5 +273,5 @@ Faceted.initializeAutocompleteWidget = function () {
 // Initialize
 jQuery(Faceted.Events).on(
     Faceted.Events.INITIALIZE,
-    Faceted.initializeAutocompleteWidget,
+    Faceted.initializeAutocompleteWidget
 );

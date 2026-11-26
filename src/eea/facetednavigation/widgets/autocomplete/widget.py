@@ -38,22 +38,35 @@ class Widget(AbstractWidget):
             string = string.replace(char, self.quotestring(char))
         return string
 
-    def parse_json(self, value):
-        if isinstance(value, (tuple, list)):
-            try:
-                return [json.loads(v) for v in value]
-            except ValueError:  # This can happen with saved urls
-                return value
+    def selection_id(self, value):
+        """Return the id of a JSON encoded ``{"id": ..., "text": ...}``
+        selection, as sent by the autocomplete widget, or None if value is
+        not such a selection (plain search term, number, or a value from a
+        URL saved before selections were JSON encoded).
+        """
+        if isinstance(value, bytes):
+            value = value.decode("utf-8")
+        if not isinstance(value, str):
+            return None
         try:
-            return json.loads(value)
+            parsed = json.loads(value)
         except ValueError:
-            return value
+            return None
+        if isinstance(parsed, dict) and "id" in parsed:
+            return str(parsed["id"])
+        return None
+
+    def parse_json(self, value):
+        """Replace JSON encoded selections with their ids.
+        Other values are returned unchanged.
+        """
+        if isinstance(value, (tuple, list)):
+            return [self.parse_json(v) for v in value]
+        selection_id = self.selection_id(value)
+        return value if selection_id is None else selection_id
 
     def normalize_string(self, value):
-        """Process string values to be used in catalog query.
-        """
-        if isinstance(value, dict):
-            value = value["id"]
+        """Process string values to be used in catalog query"""
         # Ensure words are string instances as ZCatalog requires strings
         if isinstance(value, bytes):
             value = value.decode("utf-8")
@@ -66,11 +79,13 @@ class Widget(AbstractWidget):
 
     def normalize(self, value):
         """Process value to be used in catalog query"""
+        if isinstance(value, bytes):
+            value = value.decode("utf-8")
+        if isinstance(value, str) and self.selection_id(value) is None:
+            # Plain search terms: select2 send us values separated by a comma
+            if "," in value:
+                value = value.split(",")
         value = self.parse_json(value)
-        if ',' in value:
-            value = value.split(',')
-        if isinstance(value, dict):
-            value = value["id"]
         if isinstance(value, (tuple, list)):
             value = self.normalize_list(value)
         elif isinstance(value, (bytes, str)):
