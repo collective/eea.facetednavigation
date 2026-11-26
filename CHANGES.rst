@@ -4,6 +4,10 @@ Changelog
 17.0.0 (unreleased)
 -------------------
 
+* Fix autocomplete widget returning no results on indexes without an
+  ``operator`` query option, like ZCTextIndex (e.g. ``Title``).
+  [thet]
+
 * Fix displayed value for autocomplete widget: keep the label of selected
   suggestions when the search is restored from the URL, for suggest views
   returning an ``id`` different from the ``text``. Selections are now stored

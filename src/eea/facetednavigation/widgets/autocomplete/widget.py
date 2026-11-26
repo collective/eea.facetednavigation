@@ -9,6 +9,7 @@ from eea.facetednavigation.widgets.autocomplete.interfaces import ISolrConnectio
 from eea.facetednavigation.widgets.autocomplete.interfaces import LayoutSchemata
 from eea.facetednavigation.widgets.widget import Widget as AbstractWidget
 from lxml import etree
+from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 from zope.component import queryUtility
 from zope.interface import implementer
@@ -108,7 +109,13 @@ class Widget(AbstractWidget):
             return query
 
         value = self.normalize(value)
-        query[index] = {"query": value, "operator": "and"}
+        query[index] = {"query": value}
+
+        # Not every index supports an operator, e.g. ZCTextIndex rejects it
+        catalog = getToolByName(self.context, "portal_catalog")
+        catalog_index = catalog.Indexes.get(index)
+        if "operator" in getattr(catalog_index, "query_options", []):
+            query[index]["operator"] = "and"
         return query
 
     def autocomplete_view(self):

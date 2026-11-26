@@ -192,6 +192,21 @@ Autocomplete selections
     >>> widget.normalize('"quoted"')
     '"quoted"'
 
+  Query the catalog, using a text index. The "and" operator is only used
+  with indexes supporting it, as ZCTextIndex rejects it.
+
+    >>> brains = query.query(batch=False,
+    ...     **{cid: '{"id": "Kyoto", "text": "Kyoto Protocol"}'})
+    >>> for brain in brains:
+    ...     print(brain.Title)
+    Distance-to-target (Kyoto Protocol) for new Member States countries
+
+    >>> brains = query.query(batch=False,
+    ...     **{cid: ['{"id": "443/2009", "text": "Regulation"}', 'EEA-32']})
+    >>> for brain in brains:
+    ...     print(brain.Title)
+    443/2009 EEA-32
+
   Query the catalog, using a keyword index
 
     >>> _ = configure(updateCriterion_button='Save', cid=cid, index='Subject')
