@@ -4,6 +4,17 @@ Changelog
 17.0.0 (unreleased)
 -------------------
 
+* Fix autocomplete widget returning no results on indexes without an
+  ``operator`` query option, like ZCTextIndex (e.g. ``Title``).
+  [thet]
+
+* Fix displayed value for autocomplete widget: keep the label of selected
+  suggestions when the search is restored from the URL, for suggest views
+  returning an ``id`` different from the ``text``. Selections are now stored
+  as JSON encoded ``{"id": ..., "text": ...}`` objects; plain values from
+  older URLs still work.
+  [mpeeters, thet]
+
 * Breaking: migrate to PEP 420 native namespaces (setuptools 81 / Plone 6.2).
   Support Plone 6.2 on Python 3.10 to 3.14 only: Plone 5.2, 6.0 and 6.1
   are dropped (use 16.x).

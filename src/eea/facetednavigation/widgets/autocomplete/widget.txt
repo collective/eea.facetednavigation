@@ -140,3 +140,91 @@ Faceted navigation
   Cleanup
 
     >>> ICriteria(sandbox).delete('c0')
+
+Autocomplete selections
+-----------------------
+
+  The autocomplete widget sends the selected suggestions as JSON encoded
+  {"id": ..., "text": ...} objects, so their label can be displayed again
+  when the search is restored from the URL. Only the id is used to query.
+
+    >>> _ = configure(addPropertiesWidget_button='Add', wtype='autocomplete',
+    ...               wposition='top', title='Autocomplete', index='Title')
+    >>> cid = ICriteria(sandbox).keys()[-1]
+    >>> criterion = ICriteria(sandbox).get(cid)
+
+    >>> from eea.facetednavigation.widgets.autocomplete.widget import Widget
+    >>> widget = Widget(sandbox, request, criterion)
+
+    >>> widget.normalize('{"id": "Kyoto", "text": "Kyoto Protocol"}')
+    'Kyoto'
+    >>> widget.normalize(['{"id": "443/2009", "text": "Regulation"}',
+    ...                   '{"id": "EEA-32", "text": "EEA member countries"}'])
+    ['443/2009', 'EEA-32']
+
+  Brackets in ids are quoted and commas in ids are kept
+
+    >>> widget.normalize('{"id": "(Kyoto", "text": "Kyoto"}')
+    '"("Kyoto'
+    >>> widget.normalize('{"id": "a,b", "text": "A and B"}')
+    'a,b'
+
+  Plain values (free text, defaults, URLs saved before selections were JSON
+  encoded) still work, also when mixed with JSON encoded selections
+
+    >>> widget.normalize('Kyoto')
+    'Kyoto'
+    >>> widget.normalize('Kyoto,Protocol')
+    ['Kyoto', 'Protocol']
+    >>> widget.normalize(['{"id": "Kyoto", "text": "Kyoto Protocol"}', 'EEA-32'])
+    ['Kyoto', 'EEA-32']
+
+  Values which are valid JSON but not a selection are plain search terms
+
+    >>> widget.normalize('2023')
+    '2023'
+    >>> widget.normalize(['2023', '2024'])
+    ['2023', '2024']
+    >>> widget.normalize('null')
+    'null'
+    >>> widget.normalize('true')
+    'true'
+    >>> widget.normalize('"quoted"')
+    '"quoted"'
+
+  Query the catalog, using a text index. The "and" operator is only used
+  with indexes supporting it, as ZCTextIndex rejects it.
+
+    >>> brains = query.query(batch=False,
+    ...     **{cid: '{"id": "Kyoto", "text": "Kyoto Protocol"}'})
+    >>> for brain in brains:
+    ...     print(brain.Title)
+    Distance-to-target (Kyoto Protocol) for new Member States countries
+
+    >>> brains = query.query(batch=False,
+    ...     **{cid: ['{"id": "443/2009", "text": "Regulation"}', 'EEA-32']})
+    >>> for brain in brains:
+    ...     print(brain.Title)
+    443/2009 EEA-32
+
+  Query the catalog, using a keyword index
+
+    >>> _ = configure(updateCriterion_button='Save', cid=cid, index='Subject')
+    >>> brains = query.query(batch=False,
+    ...     **{cid: '{"id": "\u015etire politica", "text": "Politics"}'})
+    >>> for brain in brains:
+    ...     print(brain.Title)
+    Distance-to-target (Kyoto Protocol) for new Member States countries
+
+    >>> brains = query.query(batch=False,
+    ...     **{cid: ['{"id": "\u015etire", "text": "News"}', '\u015etire politica']})
+    >>> for brain in brains:
+    ...     print(brain.Title)
+    Distance-to-target (Kyoto Protocol) for new Member States countries
+
+    >>> [brain.Title for brain in query.query(batch=False, **{cid: '2023'})]
+    []
+
+  Cleanup
+
+    >>> ICriteria(sandbox).delete(cid)
