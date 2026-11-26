@@ -1,7 +1,7 @@
 Changelog
 =========
 
-17.0.0 (unreleased)
+17.0.0 (2026-11-26)
 -------------------
 
 * Fix autocomplete widget returning no results on indexes without an
